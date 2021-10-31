@@ -1,0 +1,7 @@
+input UserInput {
+	id: ID
+	userName: String!
+	email: String!
+	password: String!
+	role: Role = CLIENT
+}

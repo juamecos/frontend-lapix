@@ -1,0 +1,32 @@
+mutation sendMail ($mail: MailInput!){
+  sendEmail (mail: $mail) {
+    status
+    message
+    mail {
+      from
+      to
+      subject
+      html
+    }
+  }
+}
+
+mutation activeUserEmail ( $email: String!) {
+  activeUserEmail( email: $email) {
+    status
+    message
+    mail {
+      from
+      to
+      subject
+      html
+    }
+  }
+}
+
+mutation resetPasswordEmail ($email: String!) {
+  resetPasswordEmail(email: $email) {
+    status
+    message
+  }
+}

@@ -1,0 +1,10 @@
+input MailInput {
+	"Sender email address"
+	from: String
+	"Receiver"
+	to: String!
+	"Subject of the email"
+	subject: String!
+	"Body of the email in HTML"
+	html: String!
+}

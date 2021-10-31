@@ -1,0 +1,22 @@
+
+overwrite: true
+schema: 
+- 'http://192.168.0.183:2004/graphql'
+
+documents: 'src/**/*.graphql'
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+  ./graphql.schema.json:
+    plugins:
+      - 'introspection'
+config:
+  withComponent: false
+  withHOC: false
+  withHooks: true
+  withMutationFn: true
+  withRefetchFn: false
+  reactApolloVersion: 3
