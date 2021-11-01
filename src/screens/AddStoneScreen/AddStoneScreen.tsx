@@ -22,6 +22,8 @@ import { AddStoneDocument, StonesDocument } from '../../generated/graphql';
 import LoadingScreen from '../LoadingScreen';
 import client from 'src/apollo/client';
 import { tonesDocument } from '../../generated/graphql';
+import { Asset } from 'react-native-image-picker';
+import Published from 'src/components/Published';
 
 /**
  * Screen component description
@@ -52,8 +54,21 @@ const AddStoneScreen: FC<AddStoneScreenProps> = ({ route, navigation }) => {
 		setImage,
 		setInfo,
 	} = useStone();
-	const { userName } = useUser();
+	const { userName, avatar } = useUser();
 	const [stoneData, setStoneData] = useState();
+
+	const setPreviewData = (image: Asset, userName: string, avatar: string) => {
+		console.log(image, avatar, userName);
+
+		return {
+			image: image.uri,
+			registerDate: new Date().toISOString(),
+			user: {
+				userName: userName,
+				avatar: avatar,
+			},
+		};
+	};
 
 	const labelArray = [
 		'Take Picture',
@@ -79,7 +94,7 @@ const AddStoneScreen: FC<AddStoneScreenProps> = ({ route, navigation }) => {
 					console.log(value.secure_url);
 					console.log('title', title);
 					console.log('description', description);
-					console.log('latitude', location);
+					console.log('latitude', location.latitude);
 					console.log('long', location.longitude);
 
 					setImage(value.secure_url);
@@ -97,13 +112,9 @@ const AddStoneScreen: FC<AddStoneScreenProps> = ({ route, navigation }) => {
 							mutation: AddStoneDocument,
 							refetchQueries: [StonesDocument],
 						})
-						.then(response => {
-							if (response.data.addStone.status) {
-								console.log(
-									'AddStone mutate status',
-									response.data.addStone.status,
-									setStoneData(response.data.addStone.stone)
-								);
+						.then(({ data }) => {
+							if (data.addStone.status) {
+								setStoneData(data.addStone.stone);
 
 								setStep(step + 1);
 							}
@@ -111,7 +122,7 @@ const AddStoneScreen: FC<AddStoneScreenProps> = ({ route, navigation }) => {
 				}
 			})
 			.catch(error => {
-				console.log(error);
+				console.log('RegisterStone Error', error);
 			});
 	};
 
@@ -133,19 +144,14 @@ const AddStoneScreen: FC<AddStoneScreenProps> = ({ route, navigation }) => {
 					)}
 					{step === stepsEnum.SET_LOCATION && <MapComponent />}
 					{step === stepsEnum.SET_INFO && <AddStoneForm />}
+					{step === stepsEnum.SET_INFO && <AddStoneForm />}
 					{step === stepsEnum.PREVIEW && (
-						<View
-							style={{
-								flex: 1,
-								justifyContent: 'center',
-								alignItems: 'center',
-							}}
-						>
-							{/* <Card data={stoneData!} /> */}
+						<View style={styles.previewWrapper}>
+							<Card data={setPreviewData(image, userName, avatar)} />
 						</View>
 					)}
 
-					{step === stepsEnum.SET_INFO && <AddStoneForm />}
+					{step === stepsEnum.PUBLISHED && <Published />}
 					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 						{step !== stepsEnum.SET_INFO && step !== stepsEnum.PUBLISHED ? (
 							<CustomButton
@@ -155,7 +161,7 @@ const AddStoneScreen: FC<AddStoneScreenProps> = ({ route, navigation }) => {
 									(step === stepsEnum.SET_LOCATION &&
 										location.longitude === 0 &&
 										location.latitude === 0) ||
-									!image.base64
+									!image.uri
 								}
 								title='Submit'
 								styleBtn={{ width: '50%' }}

@@ -15,4 +15,9 @@ export default StyleSheet.create({
 		backgroundColor: 'red',
 		flex: 1,
 	},
+	previewWrapper: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 });

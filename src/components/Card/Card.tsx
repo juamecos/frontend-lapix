@@ -5,7 +5,6 @@ import Text from 'src/components/Text';
 import Avatar from '../Avatar';
 import IconText from '../IconText';
 import { timeSince } from 'src/utils/time';
-import { IStone } from 'src/interfaces/IStone';
 
 export type Props = {
 	data: any;
