@@ -1,4 +1,4 @@
-import { TextProps, TextStyle } from 'react-native';
+import { StyleProp, TextProps, TextStyle } from 'react-native';
 
 export interface Props extends TextProps {
 	h1?: boolean;
@@ -11,5 +11,6 @@ export interface Props extends TextProps {
 	italic?: boolean;
 	title: string | undefined;
 	textColor?: string;
-	style?: TextStyle;
+	textShadow?: boolean;
+	style?: StyleProp<TextStyle>;
 }

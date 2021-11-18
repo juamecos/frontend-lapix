@@ -19,6 +19,7 @@ import { color } from 'src/theme';
  * 	italic,
  * 	title,
  * 	textColor = color.text,
+ * textShadow,
  * 	style,
  * 	...rest
  * }
@@ -35,6 +36,7 @@ const Text: React.FC<Props> = ({
 	italic,
 	title,
 	textColor = color.text,
+	textShadow,
 	style,
 	...rest
 }) => {
@@ -47,12 +49,17 @@ const Text: React.FC<Props> = ({
 				h2 && { fontSize: 22 },
 				h3 && { fontSize: 18 },
 				h4 && { fontSize: 16 },
-				h5 && { fontSize: 13 },
+				h5 && { fontSize: 12 },
 				p && { fontSize: 15 },
 				bold && { fontWeight: 'bold' },
 				italic && { fontStyle: 'italic' },
-				{ color: textColor },
 				style,
+				{ color: textColor },
+				textShadow && {
+					textShadowColor: 'rgba(0, 0, 0, 0.75)',
+					textShadowOffset: { width: -1, height: 1 },
+					textShadowRadius: 10,
+				},
 			]}
 			{...rest}
 		>

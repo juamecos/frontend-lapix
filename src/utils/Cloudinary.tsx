@@ -13,9 +13,32 @@ export interface ICloudinaryResult extends IResult {
 	image: string;
 }
 
-export type ICloudinaryUploader = (image: Asset) => void;
+export interface ICloudinaryResponse {
+	asset_id: string;
+	public_id: string;
+	version: number;
+	version_id: string;
+	signature: string;
+	width: number;
+	height: number;
+	format: string;
+	resource_type: string;
+	created_at: Date;
+	tags: any[];
+	bytes: number;
+	type: string;
+	etag: string;
+	placeholder: boolean;
+	url: string;
+	secure_url: string;
+	access_mode: string;
+}
 
-export const cloudinaryUploader: ICloudinaryUploader = async (image: Asset) => {
+export type ICloudinaryUploader = (
+	image: Asset
+) => Promise<ICloudinaryResponse>;
+
+export const cloudinaryUploader = async (image: Asset) => {
 	const formData = new FormData();
 	const base64img = `data:image/png;base64,${image.base64}`;
 	formData.append('file', base64img);

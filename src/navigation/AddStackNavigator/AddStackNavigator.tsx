@@ -38,7 +38,6 @@ const AddStackNavigator = () => {
 			) : (
 				<>
 					<Stack.Screen name='AddScreen' component={AddStoneScreen} />
-					<Stack.Screen name='LocationScreen' component={LocationScreen} />
 				</>
 			)}
 		</Stack.Navigator>

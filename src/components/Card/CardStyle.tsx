@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { spacing } from '../../theme/spacing';
 import { color } from '../../theme/color';
-import { shadow } from '../../theme/shadow';
 
 export default StyleSheet.create({
 	card: {
@@ -9,7 +8,7 @@ export default StyleSheet.create({
 		height: spacing.vertical.xlarge,
 		width: spacing.wp(95),
 		marginVertical: spacing.vertical.micro,
-		borderRadius: spacing.horizontal.tiny,
+		borderRadius: spacing.horizontal.micro,
 		overflow: 'hidden',
 		shadowColor: '#000',
 		shadowOffset: {
@@ -22,7 +21,7 @@ export default StyleSheet.create({
 		elevation: 3,
 	},
 	container: { flex: 1 },
-	space: { flex: 9 },
+	space: { flex: 2 },
 	header: {
 		flexDirection: 'row',
 		height: '22.5%',
@@ -34,7 +33,6 @@ export default StyleSheet.create({
 		height: '100%',
 		flex: 2,
 		flexDirection: 'row',
-		justifyContent: 'center',
 	},
 	avatar: {
 		borderRadius: 99999,
@@ -42,14 +40,14 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		paddingRight: spacing.vertical.micro,
 	},
-	group: {
+	info: {
 		flex: 1,
 		alignItems: 'flex-start',
 		justifyContent: 'center',
 	},
 	userName: {},
 	published: {},
-	headerLeft: { height: '100%', width: 60 },
+	headerLeft: { height: '100%', width: spacing.horizontal.medium },
 	menu: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 	body: { flex: 1, backgroundColor: 'green' },
 	image: { flex: 1 },
@@ -57,22 +55,23 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		height: '16.5%',
 		width: '100%',
-		paddingVertical: spacing.vertical.micro,
+		justifyContent: 'space-evenly',
+		alignItems: 'center',
 		paddingHorizontal: spacing.vertical.micro,
 	},
 	footerLeft: {
 		justifyContent: 'center',
 		alignItems: 'center',
+		paddingHorizontal: spacing.vertical.nano,
 	},
+	textIconStyle: { paddingLeft: 5 },
 	views: {},
 	footerRight: {
-		width: '40%',
+		width: '55%',
 		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
+		justifyContent: 'space-between',
+		paddingHorizontal: spacing.vertical.nano,
 	},
-	likes: {
-		marginRight: 20,
-	},
+	likes: {},
 	comments: {},
 });

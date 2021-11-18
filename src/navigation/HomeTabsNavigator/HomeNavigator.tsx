@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AddStackNavigator from '../AddStackNavigator/AddStackNavigator';
 import { StoneProvider } from 'src/context/stoneContext/stoneContext';
 import { usePermissions } from '../../context/permissionsContext/permissionsContext';
+import AddStoneScreen from 'src/screens/AddStoneScreen';
 
 export type StackParamList = {
 	HomeScreen: undefined;
@@ -87,19 +88,26 @@ const HomeTabsNavigator = () => {
 				{
 					<Tab.Screen
 						name='AddStoneScreen'
-						component={AddStackNavigator}
+						component={AddStoneScreen}
 						options={{
-							tabBarButton: ({ focused }) => (
+							tabBarIcon: ({ focused }) => (
+								<Icon
+									name='add'
+									color={color.palette.white}
+									size={spacing.vertical.small}
+								/>
+							),
+							tabBarButton: props => (
 								<CustomTabBarButton
-									focused={focused}
-									onPress={() => navigate('AddStoneScreen')}
-								>
-									<Icon
-										name='add'
-										color={color.palette.white}
-										size={spacing.vertical.small}
-									/>
-								</CustomTabBarButton>
+									focused
+									onPress={() => navigate('AddStoneScreen')} // TODO make navigation without tabs https://reactnavigation.org/docs/hiding-tabbar-in-screens/
+									children={props.children}
+									style={{
+										justifyContent: 'center',
+										alignItems: 'center',
+										textAlign: 'center',
+									}}
+								/>
 							),
 						}}
 					/>
@@ -114,7 +122,7 @@ const HomeTabsNavigator = () => {
 								h5
 								bottom
 								iconName={focused ? 'notifications' : 'notifications-outline'}
-								title='Notice'
+								title='Notifications'
 								onPress={() => navigate('NotificationsScreen')}
 								iconColor={focused ? color.primaryDarker : color.text}
 								textColor={focused ? color.primaryDarker : color.text}

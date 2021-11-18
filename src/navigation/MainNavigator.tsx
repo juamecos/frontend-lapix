@@ -11,6 +11,8 @@ import { useMeQuery } from 'src/generated/graphql';
 import { getToken } from '../utils/tokens';
 import { useUser } from '../context/userContext.tsx/userContext';
 import { StoneProvider } from 'src/context/stoneContext/stoneContext';
+import AddStoneScreen from 'src/screens/AddStoneScreen';
+import AddStackNavigator from './AddStackNavigator/AddStackNavigator';
 
 export type StackParamList = {
 	HomeScreen: undefined;
@@ -85,7 +87,10 @@ const Navigator = () => {
 			}}
 		>
 			{status === 'Authenticated' ? (
-				<Stack.Screen name='HomeTabsScreen' component={HomeTabsNavigator} />
+				<>
+					<Stack.Screen name='HomeTabsScreen' component={HomeTabsNavigator} />
+					{/* <Stack.Screen name='AddStoneScreen' component={AddStackNavigator} /> */}
+				</>
 			) : (
 				<Stack.Screen
 					name='AuthStackNavigator'

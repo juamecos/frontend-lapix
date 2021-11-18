@@ -1,6 +1,15 @@
+import { Dispatch, SetStateAction } from 'react';
+
 export interface Props {
-	title: string;
+	title?: string;
+	animationType?: 'none' | 'slide' | 'fade' | undefined;
 	children: React.ReactNode;
 	isVisible: boolean;
-	handleClose: () => void;
+	acceptButton?: boolean;
+	acceptButtonTitle?: string;
+	cancelButton?: boolean;
+	cancelButtonTitle?: string;
+	acceptButtonOnPress?: () => void;
+	cancelButtonOnPress?: () => void;
+	handleClose: Dispatch<SetStateAction<boolean>>;
 }

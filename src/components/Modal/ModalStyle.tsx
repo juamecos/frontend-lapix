@@ -1,25 +1,23 @@
-import { StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import { spacing, color } from 'src/theme';
 
 export default StyleSheet.create({
 	modalContainer: {
-		height: spacing.hp(100),
+		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: color.modalBg,
 	},
 	modalContent: {
-		width: spacing.horizontal.mega,
-		backgroundColor: color.palette.white,
+		width: '100%',
+		height: '100%',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		borderRadius: spacing.horizontal.tiny,
 		paddingVertical: spacing.vertical.tiny,
+		backgroundColor: color.modalBg,
 	},
 	close: {
 		position: 'absolute',
-		right: -5,
-		justifyContent: 'flex-end',
+		right: -spacing.horizontal.micro,
 	},
 	modalHeader: {
 		flexDirection: 'row',

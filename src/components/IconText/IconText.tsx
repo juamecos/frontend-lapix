@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Text from '../Text';
 import styles from './IconTextStyle';
 import { color } from 'src/theme/color';
-import { TextStyle, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 export type Props = {
 	h1?: boolean;
@@ -19,7 +19,10 @@ export type Props = {
 	title?: string;
 	size?: number;
 	iconColor?: string;
+	iconShadow?: boolean;
 	textColor?: string;
+	badge?: boolean;
+	badgeData?: number;
 	bottom?: boolean;
 	style?: ViewStyle;
 	textStyle?: any;
@@ -54,7 +57,10 @@ const IconText: React.FC<Props> = ({
 	title,
 	size = 20,
 	iconColor,
+	iconShadow,
 	textColor,
+	badge,
+	badgeData,
 	bottom = false,
 	style,
 	textStyle,
@@ -77,7 +83,12 @@ const IconText: React.FC<Props> = ({
 			]}
 			{...rest}
 		>
-			<Icon name={iconName} size={size} color={color.primary && iconColor} />
+			<Icon
+				name={iconName}
+				size={size}
+				color={color.primary && iconColor}
+				style={[iconShadow && styles.iconShadow]}
+			/>
 			<Text
 				h1={h1}
 				h2={h2}
@@ -91,6 +102,12 @@ const IconText: React.FC<Props> = ({
 				textColor={color.primary && textColor}
 				style={[bottom ? styles.textBottom : styles.text, textStyle]}
 			/>
+			{badge && (
+				<Text
+					title={badgeData?.toString()}
+					style={[styles.badge, bottom && { top: 4, left: 18 }]}
+				/>
+			)}
 		</TouchableOpacity>
 	);
 };

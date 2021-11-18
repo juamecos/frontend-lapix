@@ -8,14 +8,22 @@ import Card from 'src/components/Card';
 import Title from 'src/components/Title';
 import { useStone } from 'src/context/stoneContext/stoneContext';
 import { IStone } from 'src/interfaces/IStone';
-import { isTypeNode } from 'graphql';
+import Modal from 'src/components/Modal';
+import SingleStone from 'src/components/SingleStone';
+import useModal from 'src/hooks/useModal';
+import useModalWithData from 'src/hooks/useModalWithData';
 
 /**
  * Screen component description
  *
  * @returns Screen
  */
+
+const initialSelected = null;
 const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
+	const { modalOpen, setModalOpen, selected, setSelected, setModalState } =
+		useModalWithData(false, initialSelected);
+
 	const { data, error, loading } = useStonesQuery({
 		fetchPolicy: 'cache-and-network',
 		variables: {
@@ -31,7 +39,18 @@ const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
 		<Loader />;
 	}
 
-	const renderItem = ({ item }: { item: IStone }) => <Card data={item} />;
+	const handleOnSelected: (id: number) => void = (id: number) => {
+		// const stoneSelectedData = data?.stones?.stones[id];
+		const stoneSelectedData: IStone[] =
+			data?.stones?.stones &&
+			data?.stones?.stones.filter(item => item.id === id);
+		setSelected(stoneSelectedData[0]);
+		setModalState(true);
+	};
+
+	const renderItem = ({ item }: { item: IStone }) => (
+		<Card data={item} handleOnSelected={handleOnSelected} />
+	);
 
 	return (
 		<View style={style.container} testID='HomeScreen'>
@@ -48,6 +67,17 @@ const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
 					keyExtractor={(item, index) => index.toString()}
 				/>
 			)}
+			<Modal
+				// title={'Single Stone'}
+				isVisible={modalOpen}
+				animationType='slide'
+				// acceptButton
+				// acceptButtonTitle='Accept'
+				// acceptButtonOnPress={setIsVisible}
+				handleClose={setModalOpen}
+			>
+				{modalOpen && <SingleStone data={selected} />}
+			</Modal>
 		</View>
 	);
 };

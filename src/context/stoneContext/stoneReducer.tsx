@@ -27,7 +27,8 @@ export const StoneReducer = (prevState: StoneState, action: StoneAction) => {
 			reactotron.log('SET_INFO');
 			return {
 				...prevState,
-				info: action.info,
+				title: action.info.title,
+				description: action.info.description,
 			};
 		default:
 			return prevState;

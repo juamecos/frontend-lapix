@@ -31,7 +31,7 @@ import Published from 'src/components/Published';
  * @returns Screen
  */
 
-enum stepsEnum {
+export enum stepsEnum {
 	TAKE_PICTURE = 0,
 	SET_LOCATION = 1,
 	SET_INFO = 2,
@@ -87,7 +87,7 @@ const AddStoneScreen: FC<AddStoneScreenProps> = ({ route, navigation }) => {
 	];
 
 	const registerStone = async () => {
-		const cloudinaryResponse = await cloudinaryUploader(image)
+		await cloudinaryUploader(image)
 			.then(res => res.json())
 			.then(value => {
 				if (value.secure_url) {
@@ -137,13 +137,13 @@ const AddStoneScreen: FC<AddStoneScreenProps> = ({ route, navigation }) => {
 					<Title title='Add Stone' />
 					<AddStoneSteps labelArray={labelArray} />
 					<Text h4 bold title={textArray[step]} style={styles.text} />
+					{console.log(step)}
 
 					{/* <View style={styles.stepComponentWrapper}> */}
 					{step === stepsEnum.TAKE_PICTURE && (
 						<ImagePickerOpenButtons step={step} />
 					)}
 					{step === stepsEnum.SET_LOCATION && <MapComponent />}
-					{step === stepsEnum.SET_INFO && <AddStoneForm />}
 					{step === stepsEnum.SET_INFO && <AddStoneForm />}
 					{step === stepsEnum.PREVIEW && (
 						<View style={styles.previewWrapper}>

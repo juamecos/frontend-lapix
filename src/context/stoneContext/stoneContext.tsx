@@ -58,28 +58,6 @@ export const useStone = (): StoneContextType => {
 
 export const StoneProvider = ({ children }: { children: React.ReactNode }) => {
 	const [state, dispatch] = useReducer(StoneReducer, initialState);
-	// React.useEffect(() => {
-	// 	const initState = async () => {
-	// 		try {
-	// 			// dispatch({ type: 'CHECKING_AUTH' });
-	// 			// reactotron.log('AuthProvider; Checking auth initial state');
-	// 			// const userToken = await getData('token');
-	// 			// reactotron.log(userToken);
-	// 			// if (userToken) {
-	// 			// 	reactotron.log('AuthProvider: Hay user token en AuthProvider');
-	// 			// 	authActions.signIn(userToken);
-	// 			// } else {
-	// 			// 	reactotron.log('No hay user token en AuthProvider');
-	// 			// 	authActions.signOut();
-	// 			// }
-	// 		} catch (e) {
-	// 			// catch error here
-	// 			// reactotron.log(`Error: ${e}`);
-	// 			// authActions.signOut();
-	// 		}
-	// 	};
-	// 	initState();
-	// }, []);
 
 	React.useImperativeHandle(StoneRef, () => stoneActions);
 
