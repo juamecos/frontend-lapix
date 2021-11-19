@@ -1,6 +1,7 @@
 import IUser from './IUser';
 
 export interface IStone {
+	__typename?: string;
 	id: number;
 	image: string;
 	title?: string;

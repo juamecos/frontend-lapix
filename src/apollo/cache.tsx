@@ -1,4 +1,8 @@
 import { gql, InMemoryCache, makeVar } from '@apollo/client';
+import {
+	offsetLimitPagination,
+	relayStylePagination,
+} from '@apollo/client/utilities';
 
 interface IAuth {
 	isAuthenticated: boolean;
@@ -35,6 +39,6 @@ authVar({
 	id: undefined,
 });
 
-console.log(authVar());
+console.log('From cache authVar', authVar());
 
 export default cache;
