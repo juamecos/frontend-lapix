@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState, useRef } from 'react';
 import style from './HomeScreenStyle';
 import { HomeScreenProps } from './HomeScreenProps';
-import { FlatList, View } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import Loader from 'src/components/Loader';
 import { useStonesQuery } from 'src/generated/graphql';
 import Card from 'src/components/Card';
@@ -12,6 +12,8 @@ import Modal from 'src/components/Modal';
 import SingleStone from 'src/components/SingleStone';
 import useModal from 'src/hooks/useModal';
 import useModalWithData from 'src/hooks/useModalWithData';
+import { color } from 'src/theme';
+import Text from 'src/components/Text';
 
 /**
  * Screen component description
@@ -36,14 +38,15 @@ interface StoneData {
 }
 
 const initialSelected = null;
-const itemsPage = 5;
+const itemsPage = 10;
 
 const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
 	const { modalOpen, setModalOpen, selected, setSelected, setModalState } =
 		useModalWithData(false, initialSelected);
+	const [isFetching, setIsFetching] = useState(false);
 
-	const { data, error, loading, fetchMore } = useStonesQuery({
-		fetchPolicy: 'cache-first',
+	const { data, error, loading, fetchMore, refetch } = useStonesQuery({
+		fetchPolicy: 'cache-and-network',
 		variables: {
 			page: 1,
 			itemsPage: itemsPage,
@@ -51,6 +54,12 @@ const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
 	});
 
 	let stonesArray: any = useRef([]);
+
+	const onRefresh = () => {
+		setIsFetching(true);
+		refetch();
+		setIsFetching(false);
+	};
 
 	const handleOnEndReached = () => {
 		console.log('End reached');
@@ -84,7 +93,7 @@ const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
 			stones: newStones,
 		} = fetchMoreResult.stones;
 
-		const prevStones = prev.stones.stones!;
+		const prevStones = prev?.stones?.stones;
 
 		const stones = [...prevStones, ...newStones];
 
@@ -100,7 +109,7 @@ const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
 	};
 
 	if (data && data.stones && data.stones.stones) {
-		stonesArray = data.stones.stones;
+		stonesArray.current = data?.stones?.stones;
 	}
 
 	if (error) {
@@ -110,8 +119,10 @@ const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
 		<Loader />;
 	}
 
+	const stoneData = data?.stones?.stones;
+
 	const handleOnSelected: (id: number) => void = (id: number) => {
-		const stoneSelectedData: IStone[] = stonesArray.filter(
+		const stoneSelectedData: IStone[] = stonesArray.current.filter(
 			item => item.id === id
 		);
 		setSelected(stoneSelectedData[0]);
@@ -126,19 +137,31 @@ const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
 		<View style={style.container} testID='HomeScreen'>
 			<Title title='Stones' />
 
-			{loading || !data?.stones ? (
-				<Loader />
+			<FlatList
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={style.feedContainer}
+				data={stonesArray.current}
+				// data={stoneData}
+				renderItem={renderItem}
+				keyExtractor={(item, index) => index.toString()}
+				onRefresh={onRefresh}
+				refreshing={isFetching}
+				onEndReachedThreshold={1} // Thus a value of 0.5 will trigger onEndReached when the end of the content is within half the visible length of the list.
+				onEndReached={handleOnEndReached}
+			/>
+			{data?.stones?.info?.page < data?.stones?.info.pages ? (
+				<>
+					<ActivityIndicator
+						style={{ height: 100 }}
+						size={50}
+						color={color.primaryDarker}
+					/>
+					<Text h5 title='Loading more stones' />
+				</>
 			) : (
-				<FlatList
-					showsVerticalScrollIndicator={false}
-					contentContainerStyle={style.feedContainer}
-					data={stonesArray}
-					renderItem={renderItem}
-					keyExtractor={(item, index) => index.toString()}
-					onEndReachedThreshold={0.5} // Thus a value of 0.5 will trigger onEndReached when the end of the content is within half the visible length of the list.
-					onEndReached={handleOnEndReached}
-				/>
+				<Text h5 title='No more items to show' />
 			)}
+
 			<Modal
 				// title={'Single Stone'}
 				isVisible={modalOpen}

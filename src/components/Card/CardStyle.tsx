@@ -64,7 +64,7 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		paddingHorizontal: spacing.vertical.nano,
 	},
-	textIconStyle: { paddingLeft: 5 },
+	textIconStyle: { paddingLeft: spacing.wp('3%') },
 	views: {},
 	footerRight: {
 		width: '55%',

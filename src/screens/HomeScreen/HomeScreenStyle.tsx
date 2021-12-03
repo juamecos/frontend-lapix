@@ -8,7 +8,6 @@ export default StyleSheet.create({
 		alignItems: 'center',
 	},
 	feedContainer: {
-		width: '95%',
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingBottom: spacing.vertical.large,

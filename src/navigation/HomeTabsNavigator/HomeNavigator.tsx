@@ -14,8 +14,6 @@ import NotificationsScreen from 'src/screens/NotificationsScreen';
 import { useNavigation } from '@react-navigation/native';
 import CustomTabBarButton from '../../components/CustomTabBarButton/CustomTabBarButton';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-import AddStackNavigator from '../AddStackNavigator/AddStackNavigator';
 import { StoneProvider } from 'src/context/stoneContext/stoneContext';
 import { usePermissions } from '../../context/permissionsContext/permissionsContext';
 import AddStoneScreen from 'src/screens/AddStoneScreen';

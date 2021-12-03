@@ -1,0 +1,25 @@
+mutation addLike ($id: Int!) {
+  addLike(id: $id) {
+    status
+    message
+    like {
+      id
+      stoneID
+      userID
+      registerDate
+    }
+  }
+}
+
+mutation deleteLike($id: Int!) {
+  deleteLike(id: $id) {
+    status
+    message
+    like {
+      id
+      stoneID
+      userID
+      registerDate
+    }
+  }
+}

@@ -1,0 +1,45 @@
+query comments($stoneID: Int!, $page: Int!, $itemsPage: Int!) {
+  comments(stoneID: $stoneID, page: $page, itemsPage: $itemsPage) {
+    info {
+      page
+      total
+      itemsPage
+      pages
+    }
+    status
+    message
+    comments {
+      id
+      stoneID
+      userID
+      comment
+      registerDate
+      abuse
+      active
+    }
+  }
+}
+
+query comment($id: Int!) {
+  comment(id: $id) {
+		status
+    message
+    comment {
+      id
+      userID
+      stoneID
+      comment
+      registerDate
+      abuse
+      active
+    }
+  }
+}
+
+query countComments($stoneID: Int) {
+  countComments(stoneID: $stoneID) {
+    status
+    message
+    count
+  }
+}

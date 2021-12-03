@@ -1,0 +1,54 @@
+mutation addComment ($comment: CommentInput!) {
+  addComment(comment: $comment) {
+    status
+    message
+    comment {
+      id
+      stoneID
+      userID
+      comment
+      active
+      abuse
+    }
+  }
+}
+
+mutation updateComment($id: Int!, $comment: CommentInput!) {
+  updateComment(id: $id, comment: $comment) {
+    status
+    message
+    comment {
+      comment
+    }
+  }
+}
+
+mutation deleteComment($id: Int!) {
+  deleteComment(id: $id) {
+    status
+    message
+  }
+}
+
+mutation blockComment($id: Int!) {
+  blockComment(id: $id) {
+    status
+    message
+    comment {
+      id
+      active
+    }
+  }
+}
+
+mutation reportComment($id: Int!) {
+  reportComment(id: $id) {
+    status
+    message
+    comment {
+      id
+      active
+    }
+  }
+}
+

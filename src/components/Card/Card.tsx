@@ -1,12 +1,36 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, {
+	Dispatch,
+	SetStateAction,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
 import { View, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import styles from './CardStyle';
 import Text from 'src/components/Text';
 import Avatar from '../Avatar';
 import IconText from '../IconText';
 import { timeSince } from 'src/utils/time';
-import { timeAgo } from '../../utils/time';
+import { timeAgo } from 'src/utils/time';
 import { IStone } from 'src/interfaces/IStone';
+import {
+	useIsLikeQuery,
+	useDeleteLikeMutation,
+	IsLikeDocument,
+} from '../../generated/graphql';
+import {
+	useAddCommentMutation,
+	useAddLikeMutation,
+} from '../../generated/graphql';
+
+import {
+	useCountCommentsQuery,
+	useCountLikesQuery,
+} from 'src/generated/graphql';
+import { color } from 'src/theme';
+import { namedOperations } from '../../generated/graphql';
+import LikeIcon from '../LikeIcon/LikeIcon';
+import CommentIcon from '../CommentIcon';
 
 export type Props = {
 	data: IStone;
@@ -77,22 +101,9 @@ const Card: React.FC<Props> = ({ data, handleOnSelected }) => {
 					</View>
 					<View style={styles.space} />
 					<View style={styles.footerRight}>
-						<View style={styles.likes}>
-							<IconText
-								h5
-								iconName='heart-outline'
-								title='likes'
-								textStyle={styles.textIconStyle}
-							/>
-						</View>
-						<View style={styles.comments}>
-							<IconText
-								h5
-								iconName='chatbubble-outline'
-								title='comments'
-								textStyle={styles.textIconStyle}
-							/>
-						</View>
+						<LikeIcon data={data} />
+
+						<CommentIcon data={data} />
 					</View>
 				</View>
 			</View>

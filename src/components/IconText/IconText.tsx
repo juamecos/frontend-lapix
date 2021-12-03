@@ -22,7 +22,7 @@ export type Props = {
 	iconShadow?: boolean;
 	textColor?: string;
 	badge?: boolean;
-	badgeData?: number;
+	badgeData?: number | string | null;
 	bottom?: boolean;
 	style?: ViewStyle;
 	textStyle?: any;
@@ -105,7 +105,11 @@ const IconText: React.FC<Props> = ({
 			{badge && (
 				<Text
 					title={badgeData?.toString()}
-					style={[styles.badge, bottom && { top: 4, left: 18 }]}
+					textColor={color.textWhite}
+					style={[
+						styles.badge,
+						bottom ? { top: 4, left: 20 } : { top: 4, left: 10 },
+					]}
 				/>
 			)}
 		</TouchableOpacity>

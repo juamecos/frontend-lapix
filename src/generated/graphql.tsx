@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -16,19 +17,27 @@ export type Scalars = {
 
 export type Comment = {
   __typename?: 'Comment';
+  abuse: Scalars['Boolean'];
+  active: Scalars['Boolean'];
+  comment: Scalars['String'];
   id: Scalars['ID'];
+  registerDate: Scalars['String'];
   stoneID: Scalars['ID'];
   userID: Scalars['ID'];
-  comment: Scalars['String'];
-  registerDate: Scalars['String'];
-  active: Scalars['Boolean'];
-  abuse: Scalars['Boolean'];
 };
 
 export type CommentInput = {
-  id?: Maybe<Scalars['ID']>;
-  stoneID?: Maybe<Scalars['ID']>;
   comment: Scalars['String'];
+  id?: InputMaybe<Scalars['ID']>;
+  stoneID?: InputMaybe<Scalars['ID']>;
+};
+
+export type Like = {
+  __typename?: 'Like';
+  id: Scalars['ID'];
+  registerDate: Scalars['String'];
+  stoneID: Scalars['ID'];
+  userID: Scalars['ID'];
 };
 
 export type Location = {
@@ -48,77 +57,54 @@ export type Mail = {
   __typename?: 'Mail';
   /** Sender email address */
   from?: Maybe<Scalars['String']>;
-  /** Receiver */
-  to: Scalars['String'];
-  /** Subject of the email */
-  subject: Scalars['String'];
   /** Body of the email in HTML */
   html: Scalars['String'];
+  /** Subject of the email */
+  subject: Scalars['String'];
+  /** Receiver */
+  to: Scalars['String'];
 };
 
 export type MailInput = {
   /** Sender email address */
-  from?: Maybe<Scalars['String']>;
-  /** Receiver */
-  to: Scalars['String'];
-  /** Subject of the email */
-  subject: Scalars['String'];
+  from?: InputMaybe<Scalars['String']>;
   /** Body of the email in HTML */
   html: Scalars['String'];
+  /** Subject of the email */
+  subject: Scalars['String'];
+  /** Receiver */
+  to: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  /** User operations */
-  signup?: Maybe<ResultUser>;
-  signIn?: Maybe<ResultSignIn>;
-  updateUser?: Maybe<ResultUser>;
-  deleteUser?: Maybe<ResultUser>;
-  blockUser?: Maybe<ResultUser>;
   activeUserAction?: Maybe<ResultUser>;
-  resetPasswordAction?: Maybe<ResultUser>;
-  /** Stone operations */
-  addStone?: Maybe<ResultStone>;
-  updateStone?: Maybe<ResultStone>;
-  deleteStone?: Maybe<ResultStone>;
-  blockStone?: Maybe<ResultStone>;
-  reportStone?: Maybe<ResultStone>;
+  activeUserEmail?: Maybe<ResultMail>;
   /** Comment operations */
   addComment?: Maybe<ResultComment>;
-  updateComment?: Maybe<ResultComment>;
-  deleteComment?: Maybe<ResultComment>;
+  /** Likes operations */
+  addLike?: Maybe<ResultLike>;
+  /** Stone operations */
+  addStone?: Maybe<ResultStone>;
   blockComment?: Maybe<ResultComment>;
+  blockStone?: Maybe<ResultStone>;
+  blockUser?: Maybe<ResultUser>;
+  deleteComment?: Maybe<ResultComment>;
+  deleteLike?: Maybe<ResultLike>;
+  deleteStone?: Maybe<ResultStone>;
+  deleteUser?: Maybe<ResultUser>;
   reportComment?: Maybe<ResultComment>;
+  reportStone?: Maybe<ResultStone>;
+  resetPasswordAction?: Maybe<ResultUser>;
+  resetPasswordEmail?: Maybe<ResultMail>;
   /** Automatic emails sending */
   sendEmail?: Maybe<ResultMail>;
-  activeUserEmail?: Maybe<ResultMail>;
-  resetPasswordEmail?: Maybe<ResultMail>;
-};
-
-
-export type MutationSignupArgs = {
-  user: UserInput;
-};
-
-
-export type MutationSignInArgs = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
-
-export type MutationUpdateUserArgs = {
-  user: UserInput;
-};
-
-
-export type MutationDeleteUserArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationBlockUserArgs = {
-  id: Scalars['Int'];
+  signIn?: Maybe<ResultSignIn>;
+  /** User operations */
+  signup?: Maybe<ResultUser>;
+  updateComment?: Maybe<ResultComment>;
+  updateStone?: Maybe<ResultStone>;
+  updateUser?: Maybe<ResultUser>;
 };
 
 
@@ -128,11 +114,18 @@ export type MutationActiveUserActionArgs = {
 };
 
 
-export type MutationResetPasswordActionArgs = {
+export type MutationActiveUserEmailArgs = {
   email: Scalars['String'];
-  otp: Scalars['String'];
-  password: Scalars['String'];
-  confirmPassword: Scalars['String'];
+};
+
+
+export type MutationAddCommentArgs = {
+  comment: CommentInput;
+};
+
+
+export type MutationAddLikeArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -141,13 +134,7 @@ export type MutationAddStoneArgs = {
 };
 
 
-export type MutationUpdateStoneArgs = {
-  id: Scalars['Int'];
-  stone: StoneInput;
-};
-
-
-export type MutationDeleteStoneArgs = {
+export type MutationBlockCommentArgs = {
   id: Scalars['Int'];
 };
 
@@ -157,19 +144,8 @@ export type MutationBlockStoneArgs = {
 };
 
 
-export type MutationReportStoneArgs = {
+export type MutationBlockUserArgs = {
   id: Scalars['Int'];
-};
-
-
-export type MutationAddCommentArgs = {
-  comment: CommentInput;
-};
-
-
-export type MutationUpdateCommentArgs = {
-  id: Scalars['Int'];
-  comment: CommentInput;
 };
 
 
@@ -178,7 +154,17 @@ export type MutationDeleteCommentArgs = {
 };
 
 
-export type MutationBlockCommentArgs = {
+export type MutationDeleteLikeArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationDeleteStoneArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationDeleteUserArgs = {
   id: Scalars['Int'];
 };
 
@@ -188,13 +174,16 @@ export type MutationReportCommentArgs = {
 };
 
 
-export type MutationSendEmailArgs = {
-  mail: MailInput;
+export type MutationReportStoneArgs = {
+  id: Scalars['Int'];
 };
 
 
-export type MutationActiveUserEmailArgs = {
+export type MutationResetPasswordActionArgs = {
+  confirmPassword: Scalars['String'];
   email: Scalars['String'];
+  otp: Scalars['String'];
+  password: Scalars['String'];
 };
 
 
@@ -202,33 +191,120 @@ export type MutationResetPasswordEmailArgs = {
   email: Scalars['String'];
 };
 
+
+export type MutationSendEmailArgs = {
+  mail: MailInput;
+};
+
+
+export type MutationSignInArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type MutationSignupArgs = {
+  user: UserInput;
+};
+
+
+export type MutationUpdateCommentArgs = {
+  comment: CommentInput;
+  id: Scalars['Int'];
+};
+
+
+export type MutationUpdateStoneArgs = {
+  id: Scalars['Int'];
+  stone: StoneInput;
+};
+
+
+export type MutationUpdateUserArgs = {
+  user: UserInput;
+};
+
 export type Otp = {
   __typename?: 'Otp';
-  /** Hassed 6 digits code */
-  hash?: Maybe<Scalars['String']>;
   /** Expiration time of the otp in miliseconds */
   exp?: Maybe<Scalars['Int']>;
+  /** Hassed 6 digits code */
+  hash?: Maybe<Scalars['String']>;
 };
 
 /** Query definitions */
 export type Query = {
   __typename?: 'Query';
-  /** List of users registered in DB */
-  users?: Maybe<ResultUsers>;
-  /** Item of users selected */
-  user?: Maybe<ResultUser>;
+  comment?: Maybe<ResultComment>;
+  /** Comments */
+  comments?: Maybe<ResultComments>;
+  countComments?: Maybe<ResultsCountComments>;
+  countLikes?: Maybe<ResultsCountLike>;
+  isLike?: Maybe<ResultIsLike>;
+  /** Likes */
+  likes?: Maybe<ResultLikes>;
   /** User logged in */
   me?: Maybe<ResultUser>;
+  stone?: Maybe<ResultStone>;
   /** Show stones */
   stones?: Maybe<ResultStones>;
-  stone?: Maybe<ResultStone>;
+  /** Item of users selected */
+  user?: Maybe<ResultUser>;
+  /** List of users registered in DB */
+  users?: Maybe<ResultUsers>;
 };
 
 
 /** Query definitions */
-export type QueryUsersArgs = {
-  page?: Maybe<Scalars['Int']>;
-  itemsPage?: Maybe<Scalars['Int']>;
+export type QueryCommentArgs = {
+  id?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** Query definitions */
+export type QueryCommentsArgs = {
+  itemsPage?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  stoneID?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** Query definitions */
+export type QueryCountCommentsArgs = {
+  stoneID?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** Query definitions */
+export type QueryCountLikesArgs = {
+  stoneID?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** Query definitions */
+export type QueryIsLikeArgs = {
+  stoneID?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** Query definitions */
+export type QueryLikesArgs = {
+  itemsPage?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  stoneID?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** Query definitions */
+export type QueryStoneArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** Query definitions */
+export type QueryStonesArgs = {
+  itemsPage?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -239,69 +315,103 @@ export type QueryUserArgs = {
 
 
 /** Query definitions */
-export type QueryStonesArgs = {
-  page?: Maybe<Scalars['Int']>;
-  itemsPage?: Maybe<Scalars['Int']>;
-};
-
-
-/** Query definitions */
-export type QueryStoneArgs = {
-  id: Scalars['Int'];
+export type QueryUsersArgs = {
+  itemsPage?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
 };
 
 /** Interface to specify the required porperties in responses */
 export type Result = {
-  /** Operation status */
-  status: Scalars['Boolean'];
   /** Operation feedback message */
   message: Scalars['String'];
+  /** Operation status */
+  status: Scalars['Boolean'];
 };
 
 export type ResultComment = Result & {
   __typename?: 'ResultComment';
-  status: Scalars['Boolean'];
-  /** Operation feedback message */
-  message: Scalars['String'];
   /** List of stones registered in DB */
   comment?: Maybe<Comment>;
+  /** Operation feedback message */
+  message: Scalars['String'];
+  status: Scalars['Boolean'];
+};
+
+export type ResultComments = Result & {
+  __typename?: 'ResultComments';
+  /** List of stones registered in DB */
+  comments?: Maybe<Array<Maybe<Comment>>>;
+  info?: Maybe<ResultInfo>;
+  /** Operation feedback message */
+  message: Scalars['String'];
+  /** Operation status */
+  status: Scalars['Boolean'];
 };
 
 export type ResultInfo = {
   __typename?: 'ResultInfo';
-  /** Current page */
-  page: Scalars['Int'];
-  /** Total items in the collection */
-  total: Scalars['Int'];
   /** Number of items that we receive from the response */
   itemsPage: Scalars['Int'];
+  /** Current page */
+  page: Scalars['Int'];
   /** Total of pages */
   pages: Scalars['Int'];
+  /** Total items in the collection */
+  total: Scalars['Int'];
+};
+
+export type ResultIsLike = Result & {
+  __typename?: 'ResultIsLike';
+  /** IsLiked stone by user */
+  isLike?: Maybe<Scalars['Boolean']>;
+  /** Operation feedback message */
+  message: Scalars['String'];
+  status: Scalars['Boolean'];
+};
+
+export type ResultLike = Result & {
+  __typename?: 'ResultLike';
+  /** List of stones registered in DB */
+  like?: Maybe<Like>;
+  /** Operation feedback message */
+  message: Scalars['String'];
+  status: Scalars['Boolean'];
+};
+
+export type ResultLikes = Result & {
+  __typename?: 'ResultLikes';
+  info?: Maybe<ResultInfo>;
+  /** List of stones registered in DB */
+  likes?: Maybe<Array<Maybe<Like>>>;
+  /** Operation feedback message */
+  message: Scalars['String'];
+  /** Operation status */
+  status: Scalars['Boolean'];
 };
 
 export type ResultMail = Result & {
   __typename?: 'ResultMail';
-  status: Scalars['Boolean'];
-  message: Scalars['String'];
   mail?: Maybe<Mail>;
+  message: Scalars['String'];
+  status: Scalars['Boolean'];
 };
 
 export type ResultSignIn = Result & {
   __typename?: 'ResultSignIn';
-  /** Operation status */
-  status: Scalars['Boolean'];
   /** Operation feedback message */
   message: Scalars['String'];
+  /** Operation status */
+  status: Scalars['Boolean'];
   /** Signed in user token */
   token?: Maybe<Scalars['String']>;
 };
 
 export type ResultStone = Result & {
   __typename?: 'ResultStone';
-  /** Operation status */
-  status: Scalars['Boolean'];
   /** Operation feedback message */
   message: Scalars['String'];
+  /** Operation status */
+  status: Scalars['Boolean'];
   /** User Info */
   stone?: Maybe<Stone>;
 };
@@ -309,20 +419,20 @@ export type ResultStone = Result & {
 export type ResultStones = Result & {
   __typename?: 'ResultStones';
   info?: Maybe<ResultInfo>;
-  /** Operation status */
-  status: Scalars['Boolean'];
   /** Operation feedback message */
   message: Scalars['String'];
+  /** Operation status */
+  status: Scalars['Boolean'];
   /** List of stones registered in DB */
   stones?: Maybe<Array<Maybe<Stone>>>;
 };
 
 export type ResultUser = Result & {
   __typename?: 'ResultUser';
-  /** Operation status */
-  status: Scalars['Boolean'];
   /** Operation feedback message */
   message: Scalars['String'];
+  /** Operation status */
+  status: Scalars['Boolean'];
   /** User Info */
   user?: Maybe<User>;
 };
@@ -331,91 +441,184 @@ export type ResultUsers = Result & {
   __typename?: 'ResultUsers';
   /** Show info of the pagination system */
   info?: Maybe<ResultInfo>;
-  /** Operation status */
-  status: Scalars['Boolean'];
   /** Operation feedback message */
   message: Scalars['String'];
+  /** Operation status */
+  status: Scalars['Boolean'];
   /** List of users registered in DB */
   users: Array<User>;
 };
 
+export type ResultsCountComments = Result & {
+  __typename?: 'ResultsCountComments';
+  /** Number of comments registered in DB */
+  count?: Maybe<Scalars['Int']>;
+  /** Operation feedback message */
+  message: Scalars['String'];
+  status: Scalars['Boolean'];
+};
+
+export type ResultsCountLike = Result & {
+  __typename?: 'ResultsCountLike';
+  /** List of stones registered in DB */
+  count?: Maybe<Scalars['Int']>;
+  /** Operation feedback message */
+  message: Scalars['String'];
+  status: Scalars['Boolean'];
+};
+
 export enum Role {
-  Client = 'CLIENT',
-  Admin = 'ADMIN'
+  Admin = 'ADMIN',
+  Client = 'CLIENT'
 }
 
 export type Stone = {
   __typename?: 'Stone';
+  abuse?: Maybe<Scalars['Boolean']>;
+  active?: Maybe<Scalars['Boolean']>;
+  code?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   image: Scalars['String'];
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  registerDate: Scalars['String'];
   latitude: Scalars['Float'];
   longitude: Scalars['Float'];
+  registerDate: Scalars['String'];
+  title?: Maybe<Scalars['String']>;
   user: User;
-  active?: Maybe<Scalars['Boolean']>;
-  abuse?: Maybe<Scalars['Boolean']>;
-  code?: Maybe<Scalars['String']>;
 };
 
 export type StoneInput = {
+  description?: InputMaybe<Scalars['String']>;
   image: Scalars['String'];
   latitude: Scalars['Float'];
   longitude: Scalars['Float'];
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['ID'];
-  userName: Scalars['String'];
+  active?: Maybe<Scalars['Boolean']>;
+  avatar?: Maybe<Scalars['String']>;
   email: Scalars['String'];
+  id: Scalars['ID'];
+  otp?: Maybe<Otp>;
   password: Scalars['String'];
   registerDate: Scalars['String'];
-  avatar?: Maybe<Scalars['String']>;
   role: Role;
-  active?: Maybe<Scalars['Boolean']>;
-  otp?: Maybe<Otp>;
+  userName: Scalars['String'];
 };
 
 export type UserInput = {
-  id?: Maybe<Scalars['ID']>;
-  userName: Scalars['String'];
+  avatar?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
-  password?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['String']>;
-  role?: Maybe<Role>;
+  id?: InputMaybe<Scalars['ID']>;
+  password?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<Role>;
+  userName: Scalars['String'];
 };
 
-export type SendMailMutationVariables = Exact<{
-  mail: MailInput;
+export type AddCommentMutationVariables = Exact<{
+  comment: CommentInput;
 }>;
 
 
-export type SendMailMutation = { __typename?: 'Mutation', sendEmail?: Maybe<{ __typename?: 'ResultMail', status: boolean, message: string, mail?: Maybe<{ __typename?: 'Mail', from?: Maybe<string>, to: string, subject: string, html: string }> }> };
+export type AddCommentMutation = { __typename?: 'Mutation', addComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename?: 'Comment', id: string, stoneID: string, userID: string, comment: string, active: boolean, abuse: boolean } | null | undefined } | null | undefined };
 
-export type ActiveUserEmailMutationVariables = Exact<{
-  email: Scalars['String'];
+export type UpdateCommentMutationVariables = Exact<{
+  id: Scalars['Int'];
+  comment: CommentInput;
 }>;
 
 
-export type ActiveUserEmailMutation = { __typename?: 'Mutation', activeUserEmail?: Maybe<{ __typename?: 'ResultMail', status: boolean, message: string, mail?: Maybe<{ __typename?: 'Mail', from?: Maybe<string>, to: string, subject: string, html: string }> }> };
+export type UpdateCommentMutation = { __typename?: 'Mutation', updateComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename?: 'Comment', comment: string } | null | undefined } | null | undefined };
 
-export type ResetPasswordEmailMutationVariables = Exact<{
-  email: Scalars['String'];
+export type DeleteCommentMutationVariables = Exact<{
+  id: Scalars['Int'];
 }>;
 
 
-export type ResetPasswordEmailMutation = { __typename?: 'Mutation', resetPasswordEmail?: Maybe<{ __typename?: 'ResultMail', status: boolean, message: string }> };
+export type DeleteCommentMutation = { __typename?: 'Mutation', deleteComment?: { __typename?: 'ResultComment', status: boolean, message: string } | null | undefined };
+
+export type BlockCommentMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type BlockCommentMutation = { __typename?: 'Mutation', blockComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename?: 'Comment', id: string, active: boolean } | null | undefined } | null | undefined };
+
+export type ReportCommentMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type ReportCommentMutation = { __typename?: 'Mutation', reportComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename?: 'Comment', id: string, active: boolean } | null | undefined } | null | undefined };
+
+export type CommentsQueryVariables = Exact<{
+  stoneID: Scalars['Int'];
+  page: Scalars['Int'];
+  itemsPage: Scalars['Int'];
+}>;
+
+
+export type CommentsQuery = { __typename?: 'Query', comments?: { __typename?: 'ResultComments', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, total: number, itemsPage: number, pages: number } | null | undefined, comments?: Array<{ __typename?: 'Comment', id: string, stoneID: string, userID: string, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined> | null | undefined } | null | undefined };
+
+export type CommentQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type CommentQuery = { __typename?: 'Query', comment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename?: 'Comment', id: string, userID: string, stoneID: string, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined } | null | undefined };
+
+export type CountCommentsQueryVariables = Exact<{
+  stoneID?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type CountCommentsQuery = { __typename?: 'Query', countComments?: { __typename?: 'ResultsCountComments', status: boolean, message: string, count?: number | null | undefined } | null | undefined };
+
+export type AddLikeMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type AddLikeMutation = { __typename?: 'Mutation', addLike?: { __typename?: 'ResultLike', status: boolean, message: string, like?: { __typename?: 'Like', id: string, stoneID: string, userID: string, registerDate: string } | null | undefined } | null | undefined };
+
+export type DeleteLikeMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteLikeMutation = { __typename?: 'Mutation', deleteLike?: { __typename?: 'ResultLike', status: boolean, message: string, like?: { __typename?: 'Like', id: string, stoneID: string, userID: string, registerDate: string } | null | undefined } | null | undefined };
+
+export type LikesQueryVariables = Exact<{
+  stoneID: Scalars['Int'];
+  page: Scalars['Int'];
+  itemsPage: Scalars['Int'];
+}>;
+
+
+export type LikesQuery = { __typename?: 'Query', likes?: { __typename?: 'ResultLikes', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, total: number, itemsPage: number, pages: number } | null | undefined, likes?: Array<{ __typename?: 'Like', id: string, stoneID: string, userID: string } | null | undefined> | null | undefined } | null | undefined };
+
+export type IsLikeQueryVariables = Exact<{
+  stoneID: Scalars['Int'];
+}>;
+
+
+export type IsLikeQuery = { __typename?: 'Query', isLike?: { __typename?: 'ResultIsLike', status: boolean, message: string, isLike?: boolean | null | undefined } | null | undefined };
+
+export type CountLikesQueryVariables = Exact<{
+  stoneID: Scalars['Int'];
+}>;
+
+
+export type CountLikesQuery = { __typename?: 'Query', countLikes?: { __typename?: 'ResultsCountLike', status: boolean, message: string, count?: number | null | undefined } | null | undefined };
 
 export type AddStoneMutationVariables = Exact<{
   stone: StoneInput;
 }>;
 
 
-export type AddStoneMutation = { __typename?: 'Mutation', addStone?: Maybe<{ __typename?: 'ResultStone', status: boolean, message: string, stone?: Maybe<{ __typename?: 'Stone', id: number, image: string, description?: Maybe<string>, latitude: number, longitude: number, registerDate: string, active?: Maybe<boolean>, abuse?: Maybe<boolean>, code?: Maybe<string>, user: { __typename?: 'User', id: string, userName: string, avatar?: Maybe<string> } }> }> };
+export type AddStoneMutation = { __typename?: 'Mutation', addStone?: { __typename?: 'ResultStone', status: boolean, message: string, stone?: { __typename?: 'Stone', id: number, image: string, description?: string | null | undefined, latitude: number, longitude: number, registerDate: string, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, user: { __typename?: 'User', id: string, userName: string, avatar?: string | null | undefined } } | null | undefined } | null | undefined };
 
 export type UpdateStoneMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -423,21 +626,57 @@ export type UpdateStoneMutationVariables = Exact<{
 }>;
 
 
-export type UpdateStoneMutation = { __typename?: 'Mutation', updateStone?: Maybe<{ __typename?: 'ResultStone', status: boolean, message: string, stone?: Maybe<{ __typename?: 'Stone', id: number, image: string, description?: Maybe<string>, latitude: number, longitude: number, active?: Maybe<boolean>, abuse?: Maybe<boolean>, code?: Maybe<string>, user: { __typename?: 'User', id: string, userName: string, avatar?: Maybe<string> } }> }> };
+export type UpdateStoneMutation = { __typename?: 'Mutation', updateStone?: { __typename?: 'ResultStone', status: boolean, message: string, stone?: { __typename?: 'Stone', id: number, image: string, description?: string | null | undefined, latitude: number, longitude: number, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, user: { __typename?: 'User', id: string, userName: string, avatar?: string | null | undefined } } | null | undefined } | null | undefined };
 
 export type DeleteStoneMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type DeleteStoneMutation = { __typename?: 'Mutation', deleteStone?: Maybe<{ __typename?: 'ResultStone', status: boolean, message: string }> };
+export type DeleteStoneMutation = { __typename?: 'Mutation', deleteStone?: { __typename?: 'ResultStone', status: boolean, message: string } | null | undefined };
 
 export type BlockStoneMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type BlockStoneMutation = { __typename?: 'Mutation', blockStone?: Maybe<{ __typename?: 'ResultStone', status: boolean, message: string }> };
+export type BlockStoneMutation = { __typename?: 'Mutation', blockStone?: { __typename?: 'ResultStone', status: boolean, message: string } | null | undefined };
+
+export type StonesQueryVariables = Exact<{
+  page: Scalars['Int'];
+  itemsPage: Scalars['Int'];
+}>;
+
+
+export type StonesQuery = { __typename?: 'Query', stones?: { __typename?: 'ResultStones', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, total: number, itemsPage: number, pages: number } | null | undefined, stones?: Array<{ __typename?: 'Stone', id: number, image: string, description?: string | null | undefined, latitude: number, longitude: number, registerDate: string, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, user: { __typename?: 'User', id: string, userName: string, avatar?: string | null | undefined } } | null | undefined> | null | undefined } | null | undefined };
+
+export type StoneQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type StoneQuery = { __typename?: 'Query', stone?: { __typename?: 'ResultStone', status: boolean, message: string, stone?: { __typename?: 'Stone', id: number, image: string, description?: string | null | undefined, latitude: number, longitude: number, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, user: { __typename?: 'User', id: string, userName: string, avatar?: string | null | undefined } } | null | undefined } | null | undefined };
+
+export type SendMailMutationVariables = Exact<{
+  mail: MailInput;
+}>;
+
+
+export type SendMailMutation = { __typename?: 'Mutation', sendEmail?: { __typename?: 'ResultMail', status: boolean, message: string, mail?: { __typename?: 'Mail', from?: string | null | undefined, to: string, subject: string, html: string } | null | undefined } | null | undefined };
+
+export type ActiveUserEmailMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ActiveUserEmailMutation = { __typename?: 'Mutation', activeUserEmail?: { __typename?: 'ResultMail', status: boolean, message: string, mail?: { __typename?: 'Mail', from?: string | null | undefined, to: string, subject: string, html: string } | null | undefined } | null | undefined };
+
+export type ResetPasswordEmailMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ResetPasswordEmailMutation = { __typename?: 'Mutation', resetPasswordEmail?: { __typename?: 'ResultMail', status: boolean, message: string } | null | undefined };
 
 export type SigninMutationVariables = Exact<{
   email: Scalars['String'];
@@ -445,35 +684,35 @@ export type SigninMutationVariables = Exact<{
 }>;
 
 
-export type SigninMutation = { __typename?: 'Mutation', signIn?: Maybe<{ __typename?: 'ResultSignIn', status: boolean, message: string, token?: Maybe<string> }> };
+export type SigninMutation = { __typename?: 'Mutation', signIn?: { __typename?: 'ResultSignIn', status: boolean, message: string, token?: string | null | undefined } | null | undefined };
 
 export type SignUpMutationVariables = Exact<{
   user: UserInput;
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', signup?: Maybe<{ __typename?: 'ResultUser', status: boolean, message: string, user?: Maybe<{ __typename?: 'User', id: string, userName: string, email: string, active?: Maybe<boolean>, otp?: Maybe<{ __typename?: 'Otp', hash?: Maybe<string>, exp?: Maybe<number> }> }> }> };
+export type SignUpMutation = { __typename?: 'Mutation', signup?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: string, userName: string, email: string, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 export type DeleteUserMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser?: Maybe<{ __typename?: 'ResultUser', status: boolean, message: string }> };
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser?: { __typename?: 'ResultUser', status: boolean, message: string } | null | undefined };
 
 export type BlockUserMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type BlockUserMutation = { __typename?: 'Mutation', blockUser?: Maybe<{ __typename?: 'ResultUser', status: boolean, message: string }> };
+export type BlockUserMutation = { __typename?: 'Mutation', blockUser?: { __typename?: 'ResultUser', status: boolean, message: string } | null | undefined };
 
 export type UpdateUserMutationVariables = Exact<{
   user: UserInput;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: Maybe<{ __typename?: 'ResultUser', status: boolean, message: string, user?: Maybe<{ __typename?: 'User', id: string, userName: string, email: string, avatar?: Maybe<string>, role: Role }> }> };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: string, userName: string, email: string, avatar?: string | null | undefined, role: Role } | null | undefined } | null | undefined };
 
 export type ActiveUserActionMutationVariables = Exact<{
   email: Scalars['String'];
@@ -481,7 +720,7 @@ export type ActiveUserActionMutationVariables = Exact<{
 }>;
 
 
-export type ActiveUserActionMutation = { __typename?: 'Mutation', activeUserAction?: Maybe<{ __typename?: 'ResultUser', status: boolean, message: string }> };
+export type ActiveUserActionMutation = { __typename?: 'Mutation', activeUserAction?: { __typename?: 'ResultUser', status: boolean, message: string } | null | undefined };
 
 export type ResetPasswordActionMutationVariables = Exact<{
   email: Scalars['String'];
@@ -491,22 +730,7 @@ export type ResetPasswordActionMutationVariables = Exact<{
 }>;
 
 
-export type ResetPasswordActionMutation = { __typename?: 'Mutation', resetPasswordAction?: Maybe<{ __typename?: 'ResultUser', status: boolean, message: string }> };
-
-export type StonesQueryVariables = Exact<{
-  page: Scalars['Int'];
-  itemsPage: Scalars['Int'];
-}>;
-
-
-export type StonesQuery = { __typename?: 'Query', stones?: Maybe<{ __typename?: 'ResultStones', status: boolean, message: string, info?: Maybe<{ __typename?: 'ResultInfo', page: number, total: number, itemsPage: number, pages: number }>, stones?: Maybe<Array<Maybe<{ __typename?: 'Stone', id: number, image: string, description?: Maybe<string>, latitude: number, longitude: number, registerDate: string, active?: Maybe<boolean>, abuse?: Maybe<boolean>, code?: Maybe<string>, user: { __typename?: 'User', id: string, userName: string, avatar?: Maybe<string> } }>>> }> };
-
-export type StoneQueryVariables = Exact<{
-  id: Scalars['Int'];
-}>;
-
-
-export type StoneQuery = { __typename?: 'Query', stone?: Maybe<{ __typename?: 'ResultStone', status: boolean, message: string, stone?: Maybe<{ __typename?: 'Stone', id: number, image: string, description?: Maybe<string>, latitude: number, longitude: number, active?: Maybe<boolean>, abuse?: Maybe<boolean>, code?: Maybe<string>, user: { __typename?: 'User', id: string, userName: string, avatar?: Maybe<string> } }> }> };
+export type ResetPasswordActionMutation = { __typename?: 'Mutation', resetPasswordAction?: { __typename?: 'ResultUser', status: boolean, message: string } | null | undefined };
 
 export type UsersQueryVariables = Exact<{
   page: Scalars['Int'];
@@ -514,135 +738,549 @@ export type UsersQueryVariables = Exact<{
 }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users?: Maybe<{ __typename?: 'ResultUsers', status: boolean, message: string, info?: Maybe<{ __typename?: 'ResultInfo', page: number, total: number, itemsPage: number, pages: number }>, users: Array<{ __typename?: 'User', id: string, userName: string, email: string, active?: Maybe<boolean> }> }> };
+export type UsersQuery = { __typename?: 'Query', users?: { __typename?: 'ResultUsers', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, total: number, itemsPage: number, pages: number } | null | undefined, users: Array<{ __typename?: 'User', id: string, userName: string, email: string, active?: boolean | null | undefined }> } | null | undefined };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'ResultUser', status: boolean, message: string, user?: Maybe<{ __typename?: 'User', id: string, userName: string, email: string, registerDate: string, avatar?: Maybe<string>, role: Role }> }> };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: string, userName: string, email: string, registerDate: string, avatar?: string | null | undefined, role: Role } | null | undefined } | null | undefined };
 
 export type UserQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: Maybe<{ __typename?: 'ResultUser', status: boolean, message: string, user?: Maybe<{ __typename?: 'User', id: string, userName: string, email: string, avatar?: Maybe<string>, registerDate: string, role: Role, active?: Maybe<boolean> }> }> };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: string, userName: string, email: string, avatar?: string | null | undefined, registerDate: string, role: Role, active?: boolean | null | undefined } | null | undefined } | null | undefined };
 
 
-export const SendMailDocument = gql`
-    mutation sendMail($mail: MailInput!) {
-  sendEmail(mail: $mail) {
+export const AddCommentDocument = gql`
+    mutation addComment($comment: CommentInput!) {
+  addComment(comment: $comment) {
     status
     message
-    mail {
-      from
-      to
-      subject
-      html
+    comment {
+      id
+      stoneID
+      userID
+      comment
+      active
+      abuse
     }
   }
 }
     `;
-export type SendMailMutationFn = Apollo.MutationFunction<SendMailMutation, SendMailMutationVariables>;
+export type AddCommentMutationFn = Apollo.MutationFunction<AddCommentMutation, AddCommentMutationVariables>;
 
 /**
- * __useSendMailMutation__
+ * __useAddCommentMutation__
  *
- * To run a mutation, you first call `useSendMailMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSendMailMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useAddCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddCommentMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [sendMailMutation, { data, loading, error }] = useSendMailMutation({
+ * const [addCommentMutation, { data, loading, error }] = useAddCommentMutation({
  *   variables: {
- *      mail: // value for 'mail'
+ *      comment: // value for 'comment'
  *   },
  * });
  */
-export function useSendMailMutation(baseOptions?: Apollo.MutationHookOptions<SendMailMutation, SendMailMutationVariables>) {
+export function useAddCommentMutation(baseOptions?: Apollo.MutationHookOptions<AddCommentMutation, AddCommentMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SendMailMutation, SendMailMutationVariables>(SendMailDocument, options);
+        return Apollo.useMutation<AddCommentMutation, AddCommentMutationVariables>(AddCommentDocument, options);
       }
-export type SendMailMutationHookResult = ReturnType<typeof useSendMailMutation>;
-export type SendMailMutationResult = Apollo.MutationResult<SendMailMutation>;
-export type SendMailMutationOptions = Apollo.BaseMutationOptions<SendMailMutation, SendMailMutationVariables>;
-export const ActiveUserEmailDocument = gql`
-    mutation activeUserEmail($email: String!) {
-  activeUserEmail(email: $email) {
+export type AddCommentMutationHookResult = ReturnType<typeof useAddCommentMutation>;
+export type AddCommentMutationResult = Apollo.MutationResult<AddCommentMutation>;
+export type AddCommentMutationOptions = Apollo.BaseMutationOptions<AddCommentMutation, AddCommentMutationVariables>;
+export const UpdateCommentDocument = gql`
+    mutation updateComment($id: Int!, $comment: CommentInput!) {
+  updateComment(id: $id, comment: $comment) {
     status
     message
-    mail {
-      from
-      to
-      subject
-      html
+    comment {
+      comment
     }
   }
 }
     `;
-export type ActiveUserEmailMutationFn = Apollo.MutationFunction<ActiveUserEmailMutation, ActiveUserEmailMutationVariables>;
+export type UpdateCommentMutationFn = Apollo.MutationFunction<UpdateCommentMutation, UpdateCommentMutationVariables>;
 
 /**
- * __useActiveUserEmailMutation__
+ * __useUpdateCommentMutation__
  *
- * To run a mutation, you first call `useActiveUserEmailMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useActiveUserEmailMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCommentMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [activeUserEmailMutation, { data, loading, error }] = useActiveUserEmailMutation({
+ * const [updateCommentMutation, { data, loading, error }] = useUpdateCommentMutation({
  *   variables: {
- *      email: // value for 'email'
+ *      id: // value for 'id'
+ *      comment: // value for 'comment'
  *   },
  * });
  */
-export function useActiveUserEmailMutation(baseOptions?: Apollo.MutationHookOptions<ActiveUserEmailMutation, ActiveUserEmailMutationVariables>) {
+export function useUpdateCommentMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCommentMutation, UpdateCommentMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ActiveUserEmailMutation, ActiveUserEmailMutationVariables>(ActiveUserEmailDocument, options);
+        return Apollo.useMutation<UpdateCommentMutation, UpdateCommentMutationVariables>(UpdateCommentDocument, options);
       }
-export type ActiveUserEmailMutationHookResult = ReturnType<typeof useActiveUserEmailMutation>;
-export type ActiveUserEmailMutationResult = Apollo.MutationResult<ActiveUserEmailMutation>;
-export type ActiveUserEmailMutationOptions = Apollo.BaseMutationOptions<ActiveUserEmailMutation, ActiveUserEmailMutationVariables>;
-export const ResetPasswordEmailDocument = gql`
-    mutation resetPasswordEmail($email: String!) {
-  resetPasswordEmail(email: $email) {
+export type UpdateCommentMutationHookResult = ReturnType<typeof useUpdateCommentMutation>;
+export type UpdateCommentMutationResult = Apollo.MutationResult<UpdateCommentMutation>;
+export type UpdateCommentMutationOptions = Apollo.BaseMutationOptions<UpdateCommentMutation, UpdateCommentMutationVariables>;
+export const DeleteCommentDocument = gql`
+    mutation deleteComment($id: Int!) {
+  deleteComment(id: $id) {
     status
     message
   }
 }
     `;
-export type ResetPasswordEmailMutationFn = Apollo.MutationFunction<ResetPasswordEmailMutation, ResetPasswordEmailMutationVariables>;
+export type DeleteCommentMutationFn = Apollo.MutationFunction<DeleteCommentMutation, DeleteCommentMutationVariables>;
 
 /**
- * __useResetPasswordEmailMutation__
+ * __useDeleteCommentMutation__
  *
- * To run a mutation, you first call `useResetPasswordEmailMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useResetPasswordEmailMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCommentMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [resetPasswordEmailMutation, { data, loading, error }] = useResetPasswordEmailMutation({
+ * const [deleteCommentMutation, { data, loading, error }] = useDeleteCommentMutation({
  *   variables: {
- *      email: // value for 'email'
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useResetPasswordEmailMutation(baseOptions?: Apollo.MutationHookOptions<ResetPasswordEmailMutation, ResetPasswordEmailMutationVariables>) {
+export function useDeleteCommentMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCommentMutation, DeleteCommentMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ResetPasswordEmailMutation, ResetPasswordEmailMutationVariables>(ResetPasswordEmailDocument, options);
+        return Apollo.useMutation<DeleteCommentMutation, DeleteCommentMutationVariables>(DeleteCommentDocument, options);
       }
-export type ResetPasswordEmailMutationHookResult = ReturnType<typeof useResetPasswordEmailMutation>;
-export type ResetPasswordEmailMutationResult = Apollo.MutationResult<ResetPasswordEmailMutation>;
-export type ResetPasswordEmailMutationOptions = Apollo.BaseMutationOptions<ResetPasswordEmailMutation, ResetPasswordEmailMutationVariables>;
+export type DeleteCommentMutationHookResult = ReturnType<typeof useDeleteCommentMutation>;
+export type DeleteCommentMutationResult = Apollo.MutationResult<DeleteCommentMutation>;
+export type DeleteCommentMutationOptions = Apollo.BaseMutationOptions<DeleteCommentMutation, DeleteCommentMutationVariables>;
+export const BlockCommentDocument = gql`
+    mutation blockComment($id: Int!) {
+  blockComment(id: $id) {
+    status
+    message
+    comment {
+      id
+      active
+    }
+  }
+}
+    `;
+export type BlockCommentMutationFn = Apollo.MutationFunction<BlockCommentMutation, BlockCommentMutationVariables>;
+
+/**
+ * __useBlockCommentMutation__
+ *
+ * To run a mutation, you first call `useBlockCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBlockCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [blockCommentMutation, { data, loading, error }] = useBlockCommentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useBlockCommentMutation(baseOptions?: Apollo.MutationHookOptions<BlockCommentMutation, BlockCommentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<BlockCommentMutation, BlockCommentMutationVariables>(BlockCommentDocument, options);
+      }
+export type BlockCommentMutationHookResult = ReturnType<typeof useBlockCommentMutation>;
+export type BlockCommentMutationResult = Apollo.MutationResult<BlockCommentMutation>;
+export type BlockCommentMutationOptions = Apollo.BaseMutationOptions<BlockCommentMutation, BlockCommentMutationVariables>;
+export const ReportCommentDocument = gql`
+    mutation reportComment($id: Int!) {
+  reportComment(id: $id) {
+    status
+    message
+    comment {
+      id
+      active
+    }
+  }
+}
+    `;
+export type ReportCommentMutationFn = Apollo.MutationFunction<ReportCommentMutation, ReportCommentMutationVariables>;
+
+/**
+ * __useReportCommentMutation__
+ *
+ * To run a mutation, you first call `useReportCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReportCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reportCommentMutation, { data, loading, error }] = useReportCommentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useReportCommentMutation(baseOptions?: Apollo.MutationHookOptions<ReportCommentMutation, ReportCommentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ReportCommentMutation, ReportCommentMutationVariables>(ReportCommentDocument, options);
+      }
+export type ReportCommentMutationHookResult = ReturnType<typeof useReportCommentMutation>;
+export type ReportCommentMutationResult = Apollo.MutationResult<ReportCommentMutation>;
+export type ReportCommentMutationOptions = Apollo.BaseMutationOptions<ReportCommentMutation, ReportCommentMutationVariables>;
+export const CommentsDocument = gql`
+    query comments($stoneID: Int!, $page: Int!, $itemsPage: Int!) {
+  comments(stoneID: $stoneID, page: $page, itemsPage: $itemsPage) {
+    info {
+      page
+      total
+      itemsPage
+      pages
+    }
+    status
+    message
+    comments {
+      id
+      stoneID
+      userID
+      comment
+      registerDate
+      abuse
+      active
+    }
+  }
+}
+    `;
+
+/**
+ * __useCommentsQuery__
+ *
+ * To run a query within a React component, call `useCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentsQuery({
+ *   variables: {
+ *      stoneID: // value for 'stoneID'
+ *      page: // value for 'page'
+ *      itemsPage: // value for 'itemsPage'
+ *   },
+ * });
+ */
+export function useCommentsQuery(baseOptions: Apollo.QueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, options);
+      }
+export function useCommentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, options);
+        }
+export type CommentsQueryHookResult = ReturnType<typeof useCommentsQuery>;
+export type CommentsLazyQueryHookResult = ReturnType<typeof useCommentsLazyQuery>;
+export type CommentsQueryResult = Apollo.QueryResult<CommentsQuery, CommentsQueryVariables>;
+export const CommentDocument = gql`
+    query comment($id: Int!) {
+  comment(id: $id) {
+    status
+    message
+    comment {
+      id
+      userID
+      stoneID
+      comment
+      registerDate
+      abuse
+      active
+    }
+  }
+}
+    `;
+
+/**
+ * __useCommentQuery__
+ *
+ * To run a query within a React component, call `useCommentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCommentQuery(baseOptions: Apollo.QueryHookOptions<CommentQuery, CommentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CommentQuery, CommentQueryVariables>(CommentDocument, options);
+      }
+export function useCommentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CommentQuery, CommentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CommentQuery, CommentQueryVariables>(CommentDocument, options);
+        }
+export type CommentQueryHookResult = ReturnType<typeof useCommentQuery>;
+export type CommentLazyQueryHookResult = ReturnType<typeof useCommentLazyQuery>;
+export type CommentQueryResult = Apollo.QueryResult<CommentQuery, CommentQueryVariables>;
+export const CountCommentsDocument = gql`
+    query countComments($stoneID: Int) {
+  countComments(stoneID: $stoneID) {
+    status
+    message
+    count
+  }
+}
+    `;
+
+/**
+ * __useCountCommentsQuery__
+ *
+ * To run a query within a React component, call `useCountCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountCommentsQuery({
+ *   variables: {
+ *      stoneID: // value for 'stoneID'
+ *   },
+ * });
+ */
+export function useCountCommentsQuery(baseOptions?: Apollo.QueryHookOptions<CountCommentsQuery, CountCommentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CountCommentsQuery, CountCommentsQueryVariables>(CountCommentsDocument, options);
+      }
+export function useCountCommentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountCommentsQuery, CountCommentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CountCommentsQuery, CountCommentsQueryVariables>(CountCommentsDocument, options);
+        }
+export type CountCommentsQueryHookResult = ReturnType<typeof useCountCommentsQuery>;
+export type CountCommentsLazyQueryHookResult = ReturnType<typeof useCountCommentsLazyQuery>;
+export type CountCommentsQueryResult = Apollo.QueryResult<CountCommentsQuery, CountCommentsQueryVariables>;
+export const AddLikeDocument = gql`
+    mutation addLike($id: Int!) {
+  addLike(id: $id) {
+    status
+    message
+    like {
+      id
+      stoneID
+      userID
+      registerDate
+    }
+  }
+}
+    `;
+export type AddLikeMutationFn = Apollo.MutationFunction<AddLikeMutation, AddLikeMutationVariables>;
+
+/**
+ * __useAddLikeMutation__
+ *
+ * To run a mutation, you first call `useAddLikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddLikeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addLikeMutation, { data, loading, error }] = useAddLikeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAddLikeMutation(baseOptions?: Apollo.MutationHookOptions<AddLikeMutation, AddLikeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddLikeMutation, AddLikeMutationVariables>(AddLikeDocument, options);
+      }
+export type AddLikeMutationHookResult = ReturnType<typeof useAddLikeMutation>;
+export type AddLikeMutationResult = Apollo.MutationResult<AddLikeMutation>;
+export type AddLikeMutationOptions = Apollo.BaseMutationOptions<AddLikeMutation, AddLikeMutationVariables>;
+export const DeleteLikeDocument = gql`
+    mutation deleteLike($id: Int!) {
+  deleteLike(id: $id) {
+    status
+    message
+    like {
+      id
+      stoneID
+      userID
+      registerDate
+    }
+  }
+}
+    `;
+export type DeleteLikeMutationFn = Apollo.MutationFunction<DeleteLikeMutation, DeleteLikeMutationVariables>;
+
+/**
+ * __useDeleteLikeMutation__
+ *
+ * To run a mutation, you first call `useDeleteLikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLikeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLikeMutation, { data, loading, error }] = useDeleteLikeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteLikeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteLikeMutation, DeleteLikeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteLikeMutation, DeleteLikeMutationVariables>(DeleteLikeDocument, options);
+      }
+export type DeleteLikeMutationHookResult = ReturnType<typeof useDeleteLikeMutation>;
+export type DeleteLikeMutationResult = Apollo.MutationResult<DeleteLikeMutation>;
+export type DeleteLikeMutationOptions = Apollo.BaseMutationOptions<DeleteLikeMutation, DeleteLikeMutationVariables>;
+export const LikesDocument = gql`
+    query likes($stoneID: Int!, $page: Int!, $itemsPage: Int!) {
+  likes(stoneID: $stoneID, page: $page, itemsPage: $itemsPage) {
+    info {
+      page
+      total
+      itemsPage
+      pages
+    }
+    status
+    message
+    likes {
+      id
+      stoneID
+      userID
+    }
+  }
+}
+    `;
+
+/**
+ * __useLikesQuery__
+ *
+ * To run a query within a React component, call `useLikesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLikesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLikesQuery({
+ *   variables: {
+ *      stoneID: // value for 'stoneID'
+ *      page: // value for 'page'
+ *      itemsPage: // value for 'itemsPage'
+ *   },
+ * });
+ */
+export function useLikesQuery(baseOptions: Apollo.QueryHookOptions<LikesQuery, LikesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LikesQuery, LikesQueryVariables>(LikesDocument, options);
+      }
+export function useLikesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LikesQuery, LikesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LikesQuery, LikesQueryVariables>(LikesDocument, options);
+        }
+export type LikesQueryHookResult = ReturnType<typeof useLikesQuery>;
+export type LikesLazyQueryHookResult = ReturnType<typeof useLikesLazyQuery>;
+export type LikesQueryResult = Apollo.QueryResult<LikesQuery, LikesQueryVariables>;
+export const IsLikeDocument = gql`
+    query isLike($stoneID: Int!) {
+  isLike(stoneID: $stoneID) {
+    status
+    message
+    isLike
+  }
+}
+    `;
+
+/**
+ * __useIsLikeQuery__
+ *
+ * To run a query within a React component, call `useIsLikeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIsLikeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIsLikeQuery({
+ *   variables: {
+ *      stoneID: // value for 'stoneID'
+ *   },
+ * });
+ */
+export function useIsLikeQuery(baseOptions: Apollo.QueryHookOptions<IsLikeQuery, IsLikeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IsLikeQuery, IsLikeQueryVariables>(IsLikeDocument, options);
+      }
+export function useIsLikeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IsLikeQuery, IsLikeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IsLikeQuery, IsLikeQueryVariables>(IsLikeDocument, options);
+        }
+export type IsLikeQueryHookResult = ReturnType<typeof useIsLikeQuery>;
+export type IsLikeLazyQueryHookResult = ReturnType<typeof useIsLikeLazyQuery>;
+export type IsLikeQueryResult = Apollo.QueryResult<IsLikeQuery, IsLikeQueryVariables>;
+export const CountLikesDocument = gql`
+    query countLikes($stoneID: Int!) {
+  countLikes(stoneID: $stoneID) {
+    status
+    message
+    count
+  }
+}
+    `;
+
+/**
+ * __useCountLikesQuery__
+ *
+ * To run a query within a React component, call `useCountLikesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountLikesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountLikesQuery({
+ *   variables: {
+ *      stoneID: // value for 'stoneID'
+ *   },
+ * });
+ */
+export function useCountLikesQuery(baseOptions: Apollo.QueryHookOptions<CountLikesQuery, CountLikesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CountLikesQuery, CountLikesQueryVariables>(CountLikesDocument, options);
+      }
+export function useCountLikesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountLikesQuery, CountLikesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CountLikesQuery, CountLikesQueryVariables>(CountLikesDocument, options);
+        }
+export type CountLikesQueryHookResult = ReturnType<typeof useCountLikesQuery>;
+export type CountLikesLazyQueryHookResult = ReturnType<typeof useCountLikesLazyQuery>;
+export type CountLikesQueryResult = Apollo.QueryResult<CountLikesQuery, CountLikesQueryVariables>;
 export const AddStoneDocument = gql`
     mutation addStone($stone: StoneInput!) {
   addStone(stone: $stone) {
@@ -811,6 +1449,230 @@ export function useBlockStoneMutation(baseOptions?: Apollo.MutationHookOptions<B
 export type BlockStoneMutationHookResult = ReturnType<typeof useBlockStoneMutation>;
 export type BlockStoneMutationResult = Apollo.MutationResult<BlockStoneMutation>;
 export type BlockStoneMutationOptions = Apollo.BaseMutationOptions<BlockStoneMutation, BlockStoneMutationVariables>;
+export const StonesDocument = gql`
+    query stones($page: Int!, $itemsPage: Int!) {
+  stones(page: $page, itemsPage: $itemsPage) {
+    info {
+      page
+      total
+      itemsPage
+      pages
+    }
+    status
+    message
+    stones {
+      id
+      image
+      description
+      latitude
+      longitude
+      registerDate
+      user {
+        id
+        userName
+        avatar
+      }
+      active
+      abuse
+      code
+    }
+  }
+}
+    `;
+
+/**
+ * __useStonesQuery__
+ *
+ * To run a query within a React component, call `useStonesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStonesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStonesQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      itemsPage: // value for 'itemsPage'
+ *   },
+ * });
+ */
+export function useStonesQuery(baseOptions: Apollo.QueryHookOptions<StonesQuery, StonesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<StonesQuery, StonesQueryVariables>(StonesDocument, options);
+      }
+export function useStonesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StonesQuery, StonesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<StonesQuery, StonesQueryVariables>(StonesDocument, options);
+        }
+export type StonesQueryHookResult = ReturnType<typeof useStonesQuery>;
+export type StonesLazyQueryHookResult = ReturnType<typeof useStonesLazyQuery>;
+export type StonesQueryResult = Apollo.QueryResult<StonesQuery, StonesQueryVariables>;
+export const StoneDocument = gql`
+    query stone($id: Int!) {
+  stone(id: $id) {
+    status
+    message
+    stone {
+      id
+      image
+      description
+      latitude
+      longitude
+      user {
+        id
+        userName
+        avatar
+      }
+      active
+      abuse
+      code
+    }
+  }
+}
+    `;
+
+/**
+ * __useStoneQuery__
+ *
+ * To run a query within a React component, call `useStoneQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStoneQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStoneQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useStoneQuery(baseOptions: Apollo.QueryHookOptions<StoneQuery, StoneQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<StoneQuery, StoneQueryVariables>(StoneDocument, options);
+      }
+export function useStoneLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StoneQuery, StoneQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<StoneQuery, StoneQueryVariables>(StoneDocument, options);
+        }
+export type StoneQueryHookResult = ReturnType<typeof useStoneQuery>;
+export type StoneLazyQueryHookResult = ReturnType<typeof useStoneLazyQuery>;
+export type StoneQueryResult = Apollo.QueryResult<StoneQuery, StoneQueryVariables>;
+export const SendMailDocument = gql`
+    mutation sendMail($mail: MailInput!) {
+  sendEmail(mail: $mail) {
+    status
+    message
+    mail {
+      from
+      to
+      subject
+      html
+    }
+  }
+}
+    `;
+export type SendMailMutationFn = Apollo.MutationFunction<SendMailMutation, SendMailMutationVariables>;
+
+/**
+ * __useSendMailMutation__
+ *
+ * To run a mutation, you first call `useSendMailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendMailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendMailMutation, { data, loading, error }] = useSendMailMutation({
+ *   variables: {
+ *      mail: // value for 'mail'
+ *   },
+ * });
+ */
+export function useSendMailMutation(baseOptions?: Apollo.MutationHookOptions<SendMailMutation, SendMailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendMailMutation, SendMailMutationVariables>(SendMailDocument, options);
+      }
+export type SendMailMutationHookResult = ReturnType<typeof useSendMailMutation>;
+export type SendMailMutationResult = Apollo.MutationResult<SendMailMutation>;
+export type SendMailMutationOptions = Apollo.BaseMutationOptions<SendMailMutation, SendMailMutationVariables>;
+export const ActiveUserEmailDocument = gql`
+    mutation activeUserEmail($email: String!) {
+  activeUserEmail(email: $email) {
+    status
+    message
+    mail {
+      from
+      to
+      subject
+      html
+    }
+  }
+}
+    `;
+export type ActiveUserEmailMutationFn = Apollo.MutationFunction<ActiveUserEmailMutation, ActiveUserEmailMutationVariables>;
+
+/**
+ * __useActiveUserEmailMutation__
+ *
+ * To run a mutation, you first call `useActiveUserEmailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useActiveUserEmailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [activeUserEmailMutation, { data, loading, error }] = useActiveUserEmailMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useActiveUserEmailMutation(baseOptions?: Apollo.MutationHookOptions<ActiveUserEmailMutation, ActiveUserEmailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ActiveUserEmailMutation, ActiveUserEmailMutationVariables>(ActiveUserEmailDocument, options);
+      }
+export type ActiveUserEmailMutationHookResult = ReturnType<typeof useActiveUserEmailMutation>;
+export type ActiveUserEmailMutationResult = Apollo.MutationResult<ActiveUserEmailMutation>;
+export type ActiveUserEmailMutationOptions = Apollo.BaseMutationOptions<ActiveUserEmailMutation, ActiveUserEmailMutationVariables>;
+export const ResetPasswordEmailDocument = gql`
+    mutation resetPasswordEmail($email: String!) {
+  resetPasswordEmail(email: $email) {
+    status
+    message
+  }
+}
+    `;
+export type ResetPasswordEmailMutationFn = Apollo.MutationFunction<ResetPasswordEmailMutation, ResetPasswordEmailMutationVariables>;
+
+/**
+ * __useResetPasswordEmailMutation__
+ *
+ * To run a mutation, you first call `useResetPasswordEmailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetPasswordEmailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resetPasswordEmailMutation, { data, loading, error }] = useResetPasswordEmailMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useResetPasswordEmailMutation(baseOptions?: Apollo.MutationHookOptions<ResetPasswordEmailMutation, ResetPasswordEmailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ResetPasswordEmailMutation, ResetPasswordEmailMutationVariables>(ResetPasswordEmailDocument, options);
+      }
+export type ResetPasswordEmailMutationHookResult = ReturnType<typeof useResetPasswordEmailMutation>;
+export type ResetPasswordEmailMutationResult = Apollo.MutationResult<ResetPasswordEmailMutation>;
+export type ResetPasswordEmailMutationOptions = Apollo.BaseMutationOptions<ResetPasswordEmailMutation, ResetPasswordEmailMutationVariables>;
 export const SigninDocument = gql`
     mutation signin($email: String!, $password: String!) {
   signIn(email: $email, password: $password) {
@@ -1077,116 +1939,6 @@ export function useResetPasswordActionMutation(baseOptions?: Apollo.MutationHook
 export type ResetPasswordActionMutationHookResult = ReturnType<typeof useResetPasswordActionMutation>;
 export type ResetPasswordActionMutationResult = Apollo.MutationResult<ResetPasswordActionMutation>;
 export type ResetPasswordActionMutationOptions = Apollo.BaseMutationOptions<ResetPasswordActionMutation, ResetPasswordActionMutationVariables>;
-export const StonesDocument = gql`
-    query stones($page: Int!, $itemsPage: Int!) {
-  stones(page: $page, itemsPage: $itemsPage) {
-    info {
-      page
-      total
-      itemsPage
-      pages
-    }
-    status
-    message
-    stones {
-      id
-      image
-      description
-      latitude
-      longitude
-      registerDate
-      user {
-        id
-        userName
-        avatar
-      }
-      active
-      abuse
-      code
-    }
-  }
-}
-    `;
-
-/**
- * __useStonesQuery__
- *
- * To run a query within a React component, call `useStonesQuery` and pass it any options that fit your needs.
- * When your component renders, `useStonesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useStonesQuery({
- *   variables: {
- *      page: // value for 'page'
- *      itemsPage: // value for 'itemsPage'
- *   },
- * });
- */
-export function useStonesQuery(baseOptions: Apollo.QueryHookOptions<StonesQuery, StonesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<StonesQuery, StonesQueryVariables>(StonesDocument, options);
-      }
-export function useStonesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StonesQuery, StonesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<StonesQuery, StonesQueryVariables>(StonesDocument, options);
-        }
-export type StonesQueryHookResult = ReturnType<typeof useStonesQuery>;
-export type StonesLazyQueryHookResult = ReturnType<typeof useStonesLazyQuery>;
-export type StonesQueryResult = Apollo.QueryResult<StonesQuery, StonesQueryVariables>;
-export const StoneDocument = gql`
-    query stone($id: Int!) {
-  stone(id: $id) {
-    status
-    message
-    stone {
-      id
-      image
-      description
-      latitude
-      longitude
-      user {
-        id
-        userName
-        avatar
-      }
-      active
-      abuse
-      code
-    }
-  }
-}
-    `;
-
-/**
- * __useStoneQuery__
- *
- * To run a query within a React component, call `useStoneQuery` and pass it any options that fit your needs.
- * When your component renders, `useStoneQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useStoneQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useStoneQuery(baseOptions: Apollo.QueryHookOptions<StoneQuery, StoneQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<StoneQuery, StoneQueryVariables>(StoneDocument, options);
-      }
-export function useStoneLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StoneQuery, StoneQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<StoneQuery, StoneQueryVariables>(StoneDocument, options);
-        }
-export type StoneQueryHookResult = ReturnType<typeof useStoneQuery>;
-export type StoneLazyQueryHookResult = ReturnType<typeof useStoneLazyQuery>;
-export type StoneQueryResult = Apollo.QueryResult<StoneQuery, StoneQueryVariables>;
 export const UsersDocument = gql`
     query users($page: Int!, $itemsPage: Int!) {
   users(page: $page, itemsPage: $itemsPage) {
@@ -1324,3 +2076,41 @@ export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQ
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export const namedOperations = {
+  Query: {
+    comments: 'comments',
+    comment: 'comment',
+    countComments: 'countComments',
+    likes: 'likes',
+    isLike: 'isLike',
+    countLikes: 'countLikes',
+    stones: 'stones',
+    stone: 'stone',
+    users: 'users',
+    Me: 'Me',
+    user: 'user'
+  },
+  Mutation: {
+    addComment: 'addComment',
+    updateComment: 'updateComment',
+    deleteComment: 'deleteComment',
+    blockComment: 'blockComment',
+    reportComment: 'reportComment',
+    addLike: 'addLike',
+    deleteLike: 'deleteLike',
+    addStone: 'addStone',
+    updateStone: 'updateStone',
+    deleteStone: 'deleteStone',
+    blockStone: 'blockStone',
+    sendMail: 'sendMail',
+    activeUserEmail: 'activeUserEmail',
+    resetPasswordEmail: 'resetPasswordEmail',
+    signin: 'signin',
+    signUp: 'signUp',
+    deleteUser: 'deleteUser',
+    blockUser: 'blockUser',
+    updateUser: 'updateUser',
+    activeUserAction: 'activeUserAction',
+    resetPasswordAction: 'resetPasswordAction'
+  }
+}

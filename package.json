@@ -8,11 +8,13 @@
     "start": "react-native start",
     "test": "jest --watchAll",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "generate": "graphql-codegen"
+    "generate": "graphql-codegen",
+    "package.json": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "-": "^0.0.1",
     "@apollo/client": "^3.4.8",
+    "@graphql-codegen/named-operations-object": "^2.2.0",
     "@react-native-async-storage/async-storage": "^1.15.6",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^5.11.14",
@@ -48,11 +50,11 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
-    "@graphql-codegen/cli": "^2.0.1",
-    "@graphql-codegen/introspection": "^2.0.0",
-    "@graphql-codegen/typescript": "^2.0.0",
-    "@graphql-codegen/typescript-operations": "^2.0.1",
-    "@graphql-codegen/typescript-react-apollo": "^3.0.0",
+    "@graphql-codegen/cli": "2.3.0",
+    "@graphql-codegen/introspection": "2.1.0",
+    "@graphql-codegen/typescript": "2.4.1",
+    "@graphql-codegen/typescript-operations": "2.2.1",
+    "@graphql-codegen/typescript-react-apollo": "3.2.2",
     "@react-native-community/eslint-config": "^2.0.0",
     "@testing-library/jest-native": "^4.0.1",
     "@testing-library/react-native": "^7.2.0",

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useModal from './useModal';
+import { IStone } from '../interfaces/IStone';
 
 /**
  *
@@ -10,7 +11,7 @@ import useModal from './useModal';
 
 const useModalWithData = (initialMode = false, initialSelected = null) => {
 	const { modalOpen, setModalOpen } = useModal(initialMode);
-	const [selected, setSelected] = useState(initialSelected);
+	const [selected, setSelected] = useState<IStone | null>(initialSelected);
 	const setModalState = (state: any) => {
 		setModalOpen(state);
 		if (state === false) {
