@@ -1,4 +1,4 @@
-input StoneInput {
+input AddStoneInput {
 	image: String!
 	latitude: Float!
 	longitude: Float!

@@ -1,17 +1,12 @@
 query likes($stoneID: Int!, $page: Int!, $itemsPage: Int!) {
   likes(stoneID: $stoneID, page: $page, itemsPage: $itemsPage) {
     info {
-      page
-      total
-      itemsPage
-      pages
+      ...ResultInfoObject
     }
     status
     message
     likes {
-      id
-      stoneID
-      userID
+      ...LikeObject
     }
   }
 }

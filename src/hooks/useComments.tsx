@@ -1,30 +1,45 @@
-import { useState } from 'react';
-import { useCountCommentsQuery } from 'src/generated/graphql';
+import { QueryLazyOptions } from '@apollo/client';
+import { useState, useEffect } from 'react';
+import {
+	CommentQueryResult,
+	CommentsLazyQueryHookResult,
+	Exact,
+	useCommentsLazyQuery,
+	useCountCommentsQuery,
+	useUserLazyQuery,
+} from 'src/generated/graphql';
 import { IStone } from 'src/interfaces/IStone';
+import useModalWithData from './useModalWithData';
+import { IComment } from '../interfaces/IComment';
 
-export type ResultUseComments = {
-	countComments: number | undefined | null;
+export type UseCommentsResult = {
+	modalCommentsOpen: boolean;
+
+	setModalCommentsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	onHandleCommentPress: () => void;
 };
 
-export const useComments = (data: IStone): ResultUseComments => {
-	const [loadingAction, setLoadingAction] = useState<boolean>(false);
+const initialSelected = null;
+const itemsPage = 10;
 
-	const stoneID = data.id;
-
+export const useCommentsHook = (): UseCommentsResult => {
 	const {
-		data: dataCountComments,
-		error: errorCountComments,
-		loading: loadingCountComments,
-	} = useCountCommentsQuery({
-		variables: {
-			stoneID,
-		},
-	});
+		modalOpen: modalCommentsOpen,
+		selected: selectedComments,
+		setModalOpen: setModalCommentsOpen,
+		setSelected: setSelectedComments,
+		setModalState: setModalCommentsState,
+	} = useModalWithData(false, initialSelected);
 
-	if (loadingAction || loadingCountComments) {
-		return null;
-	}
-	const countComments = dataCountComments?.countComments?.count;
+	const onHandleCommentPress = () => {
+		console.log('onHandleCommentPress');
 
-	return { countComments };
+		setModalCommentsOpen(true);
+	};
+
+	return {
+		modalCommentsOpen,
+		setModalCommentsOpen,
+		onHandleCommentPress,
+	};
 };

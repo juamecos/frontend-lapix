@@ -3,10 +3,7 @@ mutation sendMail ($mail: MailInput!){
     status
     message
     mail {
-      from
-      to
-      subject
-      html
+   ...MailObject
     }
   }
 }
@@ -16,10 +13,7 @@ mutation activeUserEmail ( $email: String!) {
     status
     message
     mail {
-      from
-      to
-      subject
-      html
+      ...MailObject
     }
   }
 }

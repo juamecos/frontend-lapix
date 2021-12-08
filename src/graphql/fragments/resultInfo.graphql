@@ -1,0 +1,6 @@
+fragment ResultInfoObject on ResultInfo {
+    page
+    pages
+    total
+    itemsPage
+  }

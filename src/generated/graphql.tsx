@@ -20,10 +20,10 @@ export type Comment = {
   abuse: Scalars['Boolean'];
   active: Scalars['Boolean'];
   comment: Scalars['String'];
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   registerDate: Scalars['String'];
-  stoneID: Scalars['ID'];
-  userID: Scalars['ID'];
+  stoneID: Scalars['Int'];
+  userID: Scalars['Int'];
 };
 
 export type CommentInput = {
@@ -34,10 +34,10 @@ export type CommentInput = {
 
 export type Like = {
   __typename?: 'Like';
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   registerDate: Scalars['String'];
-  stoneID: Scalars['ID'];
-  userID: Scalars['ID'];
+  stoneID: Scalars['Int'];
+  userID: Scalars['Int'];
 };
 
 export type Location = {
@@ -477,10 +477,14 @@ export type Stone = {
   abuse?: Maybe<Scalars['Boolean']>;
   active?: Maybe<Scalars['Boolean']>;
   code?: Maybe<Scalars['String']>;
+  commentCount?: Maybe<Scalars['Int']>;
+  comments: Array<Maybe<Comment>>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   image: Scalars['String'];
   latitude: Scalars['Float'];
+  likeCount?: Maybe<Scalars['Int']>;
+  likes: Array<Maybe<Like>>;
   longitude: Scalars['Float'];
   registerDate: Scalars['String'];
   title?: Maybe<Scalars['String']>;
@@ -500,7 +504,7 @@ export type User = {
   active?: Maybe<Scalars['Boolean']>;
   avatar?: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   otp?: Maybe<Otp>;
   password: Scalars['String'];
   registerDate: Scalars['String'];
@@ -517,12 +521,14 @@ export type UserInput = {
   userName: Scalars['String'];
 };
 
+export type CommentObjectFragment = { __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean };
+
 export type AddCommentMutationVariables = Exact<{
   comment: CommentInput;
 }>;
 
 
-export type AddCommentMutation = { __typename?: 'Mutation', addComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename?: 'Comment', id: string, stoneID: string, userID: string, comment: string, active: boolean, abuse: boolean } | null | undefined } | null | undefined };
+export type AddCommentMutation = { __typename?: 'Mutation', addComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined } | null | undefined };
 
 export type UpdateCommentMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -530,28 +536,28 @@ export type UpdateCommentMutationVariables = Exact<{
 }>;
 
 
-export type UpdateCommentMutation = { __typename?: 'Mutation', updateComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename?: 'Comment', comment: string } | null | undefined } | null | undefined };
+export type UpdateCommentMutation = { __typename?: 'Mutation', updateComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined } | null | undefined };
 
 export type DeleteCommentMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type DeleteCommentMutation = { __typename?: 'Mutation', deleteComment?: { __typename?: 'ResultComment', status: boolean, message: string } | null | undefined };
+export type DeleteCommentMutation = { __typename?: 'Mutation', deleteComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined } | null | undefined };
 
 export type BlockCommentMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type BlockCommentMutation = { __typename?: 'Mutation', blockComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename?: 'Comment', id: string, active: boolean } | null | undefined } | null | undefined };
+export type BlockCommentMutation = { __typename?: 'Mutation', blockComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined } | null | undefined };
 
 export type ReportCommentMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type ReportCommentMutation = { __typename?: 'Mutation', reportComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename?: 'Comment', id: string, active: boolean } | null | undefined } | null | undefined };
+export type ReportCommentMutation = { __typename?: 'Mutation', reportComment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined } | null | undefined };
 
 export type CommentsQueryVariables = Exact<{
   stoneID: Scalars['Int'];
@@ -560,14 +566,14 @@ export type CommentsQueryVariables = Exact<{
 }>;
 
 
-export type CommentsQuery = { __typename?: 'Query', comments?: { __typename?: 'ResultComments', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, total: number, itemsPage: number, pages: number } | null | undefined, comments?: Array<{ __typename?: 'Comment', id: string, stoneID: string, userID: string, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined> | null | undefined } | null | undefined };
+export type CommentsQuery = { __typename?: 'Query', comments?: { __typename?: 'ResultComments', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, pages: number, total: number, itemsPage: number } | null | undefined, comments?: Array<{ __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined> | null | undefined } | null | undefined };
 
 export type CommentQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type CommentQuery = { __typename?: 'Query', comment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename?: 'Comment', id: string, userID: string, stoneID: string, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined } | null | undefined };
+export type CommentQuery = { __typename?: 'Query', comment?: { __typename?: 'ResultComment', status: boolean, message: string, comment?: { __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined } | null | undefined };
 
 export type CountCommentsQueryVariables = Exact<{
   stoneID?: InputMaybe<Scalars['Int']>;
@@ -576,19 +582,25 @@ export type CountCommentsQueryVariables = Exact<{
 
 export type CountCommentsQuery = { __typename?: 'Query', countComments?: { __typename?: 'ResultsCountComments', status: boolean, message: string, count?: number | null | undefined } | null | undefined };
 
+export type MailObjectFragment = { __typename?: 'Mail', from?: string | null | undefined, to: string, subject: string, html: string };
+
+export type ResultInfoObjectFragment = { __typename?: 'ResultInfo', page: number, pages: number, total: number, itemsPage: number };
+
+export type LikeObjectFragment = { __typename?: 'Like', id: number, stoneID: number, userID: number, registerDate: string };
+
 export type AddLikeMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type AddLikeMutation = { __typename?: 'Mutation', addLike?: { __typename?: 'ResultLike', status: boolean, message: string, like?: { __typename?: 'Like', id: string, stoneID: string, userID: string, registerDate: string } | null | undefined } | null | undefined };
+export type AddLikeMutation = { __typename?: 'Mutation', addLike?: { __typename?: 'ResultLike', status: boolean, message: string, like?: { __typename?: 'Like', id: number, stoneID: number, userID: number, registerDate: string } | null | undefined } | null | undefined };
 
 export type DeleteLikeMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type DeleteLikeMutation = { __typename?: 'Mutation', deleteLike?: { __typename?: 'ResultLike', status: boolean, message: string, like?: { __typename?: 'Like', id: string, stoneID: string, userID: string, registerDate: string } | null | undefined } | null | undefined };
+export type DeleteLikeMutation = { __typename?: 'Mutation', deleteLike?: { __typename?: 'ResultLike', status: boolean, message: string, like?: { __typename?: 'Like', id: number, stoneID: number, userID: number, registerDate: string } | null | undefined } | null | undefined };
 
 export type LikesQueryVariables = Exact<{
   stoneID: Scalars['Int'];
@@ -597,7 +609,7 @@ export type LikesQueryVariables = Exact<{
 }>;
 
 
-export type LikesQuery = { __typename?: 'Query', likes?: { __typename?: 'ResultLikes', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, total: number, itemsPage: number, pages: number } | null | undefined, likes?: Array<{ __typename?: 'Like', id: string, stoneID: string, userID: string } | null | undefined> | null | undefined } | null | undefined };
+export type LikesQuery = { __typename?: 'Query', likes?: { __typename?: 'ResultLikes', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, pages: number, total: number, itemsPage: number } | null | undefined, likes?: Array<{ __typename?: 'Like', id: number, stoneID: number, userID: number, registerDate: string } | null | undefined> | null | undefined } | null | undefined };
 
 export type IsLikeQueryVariables = Exact<{
   stoneID: Scalars['Int'];
@@ -613,20 +625,24 @@ export type CountLikesQueryVariables = Exact<{
 
 export type CountLikesQuery = { __typename?: 'Query', countLikes?: { __typename?: 'ResultsCountLike', status: boolean, message: string, count?: number | null | undefined } | null | undefined };
 
+export type StoneObjectFragment = { __typename?: 'Stone', id: number, image: string, title?: string | null | undefined, description?: string | null | undefined, registerDate: string, latitude: number, longitude: number, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, commentCount?: number | null | undefined, likeCount?: number | null | undefined, user: { __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined }, comments: Array<{ __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined>, likes: Array<{ __typename?: 'Like', id: number, stoneID: number, userID: number, registerDate: string } | null | undefined> };
+
 export type AddStoneMutationVariables = Exact<{
   stone: StoneInput;
+  include: Scalars['Boolean'];
 }>;
 
 
-export type AddStoneMutation = { __typename?: 'Mutation', addStone?: { __typename?: 'ResultStone', status: boolean, message: string, stone?: { __typename?: 'Stone', id: number, image: string, description?: string | null | undefined, latitude: number, longitude: number, registerDate: string, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, user: { __typename?: 'User', id: string, userName: string, avatar?: string | null | undefined } } | null | undefined } | null | undefined };
+export type AddStoneMutation = { __typename?: 'Mutation', addStone?: { __typename?: 'ResultStone', status: boolean, message: string, stone?: { __typename?: 'Stone', id: number, image: string, title?: string | null | undefined, description?: string | null | undefined, registerDate: string, latitude: number, longitude: number, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, commentCount?: number | null | undefined, likeCount?: number | null | undefined, user: { __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined }, comments: Array<{ __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined>, likes: Array<{ __typename?: 'Like', id: number, stoneID: number, userID: number, registerDate: string } | null | undefined> } | null | undefined } | null | undefined };
 
 export type UpdateStoneMutationVariables = Exact<{
   id: Scalars['Int'];
   stone: StoneInput;
+  include: Scalars['Boolean'];
 }>;
 
 
-export type UpdateStoneMutation = { __typename?: 'Mutation', updateStone?: { __typename?: 'ResultStone', status: boolean, message: string, stone?: { __typename?: 'Stone', id: number, image: string, description?: string | null | undefined, latitude: number, longitude: number, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, user: { __typename?: 'User', id: string, userName: string, avatar?: string | null | undefined } } | null | undefined } | null | undefined };
+export type UpdateStoneMutation = { __typename?: 'Mutation', updateStone?: { __typename?: 'ResultStone', status: boolean, message: string, stone?: { __typename?: 'Stone', id: number, image: string, title?: string | null | undefined, description?: string | null | undefined, registerDate: string, latitude: number, longitude: number, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, commentCount?: number | null | undefined, likeCount?: number | null | undefined, user: { __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined }, comments: Array<{ __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined>, likes: Array<{ __typename?: 'Like', id: number, stoneID: number, userID: number, registerDate: string } | null | undefined> } | null | undefined } | null | undefined };
 
 export type DeleteStoneMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -645,17 +661,21 @@ export type BlockStoneMutation = { __typename?: 'Mutation', blockStone?: { __typ
 export type StonesQueryVariables = Exact<{
   page: Scalars['Int'];
   itemsPage: Scalars['Int'];
+  include: Scalars['Boolean'];
 }>;
 
 
-export type StonesQuery = { __typename?: 'Query', stones?: { __typename?: 'ResultStones', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, total: number, itemsPage: number, pages: number } | null | undefined, stones?: Array<{ __typename?: 'Stone', id: number, image: string, description?: string | null | undefined, latitude: number, longitude: number, registerDate: string, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, user: { __typename?: 'User', id: string, userName: string, avatar?: string | null | undefined } } | null | undefined> | null | undefined } | null | undefined };
+export type StonesQuery = { __typename?: 'Query', stones?: { __typename?: 'ResultStones', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, pages: number, total: number, itemsPage: number } | null | undefined, stones?: Array<{ __typename?: 'Stone', id: number, image: string, title?: string | null | undefined, description?: string | null | undefined, registerDate: string, latitude: number, longitude: number, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, commentCount?: number | null | undefined, likeCount?: number | null | undefined, user: { __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined }, comments: Array<{ __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined>, likes: Array<{ __typename?: 'Like', id: number, stoneID: number, userID: number, registerDate: string } | null | undefined> } | null | undefined> | null | undefined } | null | undefined };
 
 export type StoneQueryVariables = Exact<{
   id: Scalars['Int'];
+  include: Scalars['Boolean'];
 }>;
 
 
-export type StoneQuery = { __typename?: 'Query', stone?: { __typename?: 'ResultStone', status: boolean, message: string, stone?: { __typename?: 'Stone', id: number, image: string, description?: string | null | undefined, latitude: number, longitude: number, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, user: { __typename?: 'User', id: string, userName: string, avatar?: string | null | undefined } } | null | undefined } | null | undefined };
+export type StoneQuery = { __typename?: 'Query', stone?: { __typename?: 'ResultStone', status: boolean, message: string, stone?: { __typename?: 'Stone', id: number, image: string, title?: string | null | undefined, description?: string | null | undefined, registerDate: string, latitude: number, longitude: number, active?: boolean | null | undefined, abuse?: boolean | null | undefined, code?: string | null | undefined, commentCount?: number | null | undefined, likeCount?: number | null | undefined, user: { __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined }, comments: Array<{ __typename: 'Comment', id: number, stoneID: number, userID: number, comment: string, registerDate: string, abuse: boolean, active: boolean } | null | undefined>, likes: Array<{ __typename?: 'Like', id: number, stoneID: number, userID: number, registerDate: string } | null | undefined> } | null | undefined } | null | undefined };
+
+export type UserObjectFragment = { __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined };
 
 export type SendMailMutationVariables = Exact<{
   mail: MailInput;
@@ -688,10 +708,11 @@ export type SigninMutation = { __typename?: 'Mutation', signIn?: { __typename?: 
 
 export type SignUpMutationVariables = Exact<{
   user: UserInput;
+  include: Scalars['Boolean'];
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', signup?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: string, userName: string, email: string, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type SignUpMutation = { __typename?: 'Mutation', signup?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 export type DeleteUserMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -709,10 +730,11 @@ export type BlockUserMutation = { __typename?: 'Mutation', blockUser?: { __typen
 
 export type UpdateUserMutationVariables = Exact<{
   user: UserInput;
+  include: Scalars['Boolean'];
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: string, userName: string, email: string, avatar?: string | null | undefined, role: Role } | null | undefined } | null | undefined };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 export type ActiveUserActionMutationVariables = Exact<{
   email: Scalars['String'];
@@ -735,40 +757,117 @@ export type ResetPasswordActionMutation = { __typename?: 'Mutation', resetPasswo
 export type UsersQueryVariables = Exact<{
   page: Scalars['Int'];
   itemsPage: Scalars['Int'];
+  include: Scalars['Boolean'];
 }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users?: { __typename?: 'ResultUsers', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, total: number, itemsPage: number, pages: number } | null | undefined, users: Array<{ __typename?: 'User', id: string, userName: string, email: string, active?: boolean | null | undefined }> } | null | undefined };
+export type UsersQuery = { __typename?: 'Query', users?: { __typename?: 'ResultUsers', status: boolean, message: string, info?: { __typename?: 'ResultInfo', page: number, pages: number, total: number, itemsPage: number } | null | undefined, users: Array<{ __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined }> } | null | undefined };
 
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+export type MeQueryVariables = Exact<{
+  include: Scalars['Boolean'];
+}>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: string, userName: string, email: string, registerDate: string, avatar?: string | null | undefined, role: Role } | null | undefined } | null | undefined };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 export type UserQueryVariables = Exact<{
   id: Scalars['Int'];
+  include: Scalars['Boolean'];
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: string, userName: string, email: string, avatar?: string | null | undefined, registerDate: string, role: Role, active?: boolean | null | undefined } | null | undefined } | null | undefined };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'ResultUser', status: boolean, message: string, user?: { __typename?: 'User', id: number, userName: string, email: string, password?: string, registerDate?: string, avatar?: string | null | undefined, role?: Role, active?: boolean | null | undefined, otp?: { __typename?: 'Otp', hash?: string | null | undefined, exp?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
-
+export const MailObjectFragmentDoc = gql`
+    fragment MailObject on Mail {
+  from
+  to
+  subject
+  html
+}
+    `;
+export const ResultInfoObjectFragmentDoc = gql`
+    fragment ResultInfoObject on ResultInfo {
+  page
+  pages
+  total
+  itemsPage
+}
+    `;
+export const UserObjectFragmentDoc = gql`
+    fragment UserObject on User {
+  id
+  userName
+  email
+  password @include(if: $include)
+  registerDate @include(if: $include)
+  avatar
+  role @include(if: $include)
+  active
+  otp @include(if: $include) {
+    hash
+    exp
+  }
+}
+    `;
+export const CommentObjectFragmentDoc = gql`
+    fragment CommentObject on Comment {
+  __typename
+  id
+  stoneID
+  userID
+  comment
+  registerDate
+  abuse
+  active
+}
+    `;
+export const LikeObjectFragmentDoc = gql`
+    fragment LikeObject on Like {
+  id
+  stoneID
+  userID
+  registerDate
+}
+    `;
+export const StoneObjectFragmentDoc = gql`
+    fragment StoneObject on Stone {
+  id
+  image
+  title
+  description
+  registerDate
+  latitude
+  longitude
+  active
+  abuse
+  code
+  user {
+    ...UserObject
+  }
+  commentCount
+  likeCount
+  comments {
+    ...CommentObject
+  }
+  likes {
+    ...LikeObject
+  }
+}
+    ${UserObjectFragmentDoc}
+${CommentObjectFragmentDoc}
+${LikeObjectFragmentDoc}`;
 export const AddCommentDocument = gql`
     mutation addComment($comment: CommentInput!) {
   addComment(comment: $comment) {
     status
     message
     comment {
-      id
-      stoneID
-      userID
-      comment
-      active
-      abuse
+      ...CommentObject
     }
   }
 }
-    `;
+    ${CommentObjectFragmentDoc}`;
 export type AddCommentMutationFn = Apollo.MutationFunction<AddCommentMutation, AddCommentMutationVariables>;
 
 /**
@@ -801,11 +900,11 @@ export const UpdateCommentDocument = gql`
     status
     message
     comment {
-      comment
+      ...CommentObject
     }
   }
 }
-    `;
+    ${CommentObjectFragmentDoc}`;
 export type UpdateCommentMutationFn = Apollo.MutationFunction<UpdateCommentMutation, UpdateCommentMutationVariables>;
 
 /**
@@ -838,9 +937,12 @@ export const DeleteCommentDocument = gql`
   deleteComment(id: $id) {
     status
     message
+    comment {
+      ...CommentObject
+    }
   }
 }
-    `;
+    ${CommentObjectFragmentDoc}`;
 export type DeleteCommentMutationFn = Apollo.MutationFunction<DeleteCommentMutation, DeleteCommentMutationVariables>;
 
 /**
@@ -873,12 +975,11 @@ export const BlockCommentDocument = gql`
     status
     message
     comment {
-      id
-      active
+      ...CommentObject
     }
   }
 }
-    `;
+    ${CommentObjectFragmentDoc}`;
 export type BlockCommentMutationFn = Apollo.MutationFunction<BlockCommentMutation, BlockCommentMutationVariables>;
 
 /**
@@ -911,12 +1012,11 @@ export const ReportCommentDocument = gql`
     status
     message
     comment {
-      id
-      active
+      ...CommentObject
     }
   }
 }
-    `;
+    ${CommentObjectFragmentDoc}`;
 export type ReportCommentMutationFn = Apollo.MutationFunction<ReportCommentMutation, ReportCommentMutationVariables>;
 
 /**
@@ -947,25 +1047,17 @@ export const CommentsDocument = gql`
     query comments($stoneID: Int!, $page: Int!, $itemsPage: Int!) {
   comments(stoneID: $stoneID, page: $page, itemsPage: $itemsPage) {
     info {
-      page
-      total
-      itemsPage
-      pages
+      ...ResultInfoObject
     }
     status
     message
     comments {
-      id
-      stoneID
-      userID
-      comment
-      registerDate
-      abuse
-      active
+      ...CommentObject
     }
   }
 }
-    `;
+    ${ResultInfoObjectFragmentDoc}
+${CommentObjectFragmentDoc}`;
 
 /**
  * __useCommentsQuery__
@@ -1002,17 +1094,11 @@ export const CommentDocument = gql`
     status
     message
     comment {
-      id
-      userID
-      stoneID
-      comment
-      registerDate
-      abuse
-      active
+      ...CommentObject
     }
   }
 }
-    `;
+    ${CommentObjectFragmentDoc}`;
 
 /**
  * __useCommentQuery__
@@ -1084,14 +1170,11 @@ export const AddLikeDocument = gql`
     status
     message
     like {
-      id
-      stoneID
-      userID
-      registerDate
+      ...LikeObject
     }
   }
 }
-    `;
+    ${LikeObjectFragmentDoc}`;
 export type AddLikeMutationFn = Apollo.MutationFunction<AddLikeMutation, AddLikeMutationVariables>;
 
 /**
@@ -1124,14 +1207,11 @@ export const DeleteLikeDocument = gql`
     status
     message
     like {
-      id
-      stoneID
-      userID
-      registerDate
+      ...LikeObject
     }
   }
 }
-    `;
+    ${LikeObjectFragmentDoc}`;
 export type DeleteLikeMutationFn = Apollo.MutationFunction<DeleteLikeMutation, DeleteLikeMutationVariables>;
 
 /**
@@ -1162,21 +1242,17 @@ export const LikesDocument = gql`
     query likes($stoneID: Int!, $page: Int!, $itemsPage: Int!) {
   likes(stoneID: $stoneID, page: $page, itemsPage: $itemsPage) {
     info {
-      page
-      total
-      itemsPage
-      pages
+      ...ResultInfoObject
     }
     status
     message
     likes {
-      id
-      stoneID
-      userID
+      ...LikeObject
     }
   }
 }
-    `;
+    ${ResultInfoObjectFragmentDoc}
+${LikeObjectFragmentDoc}`;
 
 /**
  * __useLikesQuery__
@@ -1282,29 +1358,16 @@ export type CountLikesQueryHookResult = ReturnType<typeof useCountLikesQuery>;
 export type CountLikesLazyQueryHookResult = ReturnType<typeof useCountLikesLazyQuery>;
 export type CountLikesQueryResult = Apollo.QueryResult<CountLikesQuery, CountLikesQueryVariables>;
 export const AddStoneDocument = gql`
-    mutation addStone($stone: StoneInput!) {
+    mutation addStone($stone: StoneInput!, $include: Boolean!) {
   addStone(stone: $stone) {
     status
     message
     stone {
-      id
-      image
-      description
-      latitude
-      longitude
-      registerDate
-      user {
-        id
-        userName
-        avatar
-      }
-      active
-      abuse
-      code
+      ...StoneObject
     }
   }
 }
-    `;
+    ${StoneObjectFragmentDoc}`;
 export type AddStoneMutationFn = Apollo.MutationFunction<AddStoneMutation, AddStoneMutationVariables>;
 
 /**
@@ -1321,6 +1384,7 @@ export type AddStoneMutationFn = Apollo.MutationFunction<AddStoneMutation, AddSt
  * const [addStoneMutation, { data, loading, error }] = useAddStoneMutation({
  *   variables: {
  *      stone: // value for 'stone'
+ *      include: // value for 'include'
  *   },
  * });
  */
@@ -1332,28 +1396,16 @@ export type AddStoneMutationHookResult = ReturnType<typeof useAddStoneMutation>;
 export type AddStoneMutationResult = Apollo.MutationResult<AddStoneMutation>;
 export type AddStoneMutationOptions = Apollo.BaseMutationOptions<AddStoneMutation, AddStoneMutationVariables>;
 export const UpdateStoneDocument = gql`
-    mutation updateStone($id: Int!, $stone: StoneInput!) {
+    mutation updateStone($id: Int!, $stone: StoneInput!, $include: Boolean!) {
   updateStone(id: $id, stone: $stone) {
     status
     message
     stone {
-      id
-      image
-      description
-      latitude
-      longitude
-      user {
-        id
-        userName
-        avatar
-      }
-      active
-      abuse
-      code
+      ...StoneObject
     }
   }
 }
-    `;
+    ${StoneObjectFragmentDoc}`;
 export type UpdateStoneMutationFn = Apollo.MutationFunction<UpdateStoneMutation, UpdateStoneMutationVariables>;
 
 /**
@@ -1371,6 +1423,7 @@ export type UpdateStoneMutationFn = Apollo.MutationFunction<UpdateStoneMutation,
  *   variables: {
  *      id: // value for 'id'
  *      stone: // value for 'stone'
+ *      include: // value for 'include'
  *   },
  * });
  */
@@ -1450,35 +1503,20 @@ export type BlockStoneMutationHookResult = ReturnType<typeof useBlockStoneMutati
 export type BlockStoneMutationResult = Apollo.MutationResult<BlockStoneMutation>;
 export type BlockStoneMutationOptions = Apollo.BaseMutationOptions<BlockStoneMutation, BlockStoneMutationVariables>;
 export const StonesDocument = gql`
-    query stones($page: Int!, $itemsPage: Int!) {
+    query stones($page: Int!, $itemsPage: Int!, $include: Boolean!) {
   stones(page: $page, itemsPage: $itemsPage) {
     info {
-      page
-      total
-      itemsPage
-      pages
+      ...ResultInfoObject
     }
     status
     message
     stones {
-      id
-      image
-      description
-      latitude
-      longitude
-      registerDate
-      user {
-        id
-        userName
-        avatar
-      }
-      active
-      abuse
-      code
+      ...StoneObject
     }
   }
 }
-    `;
+    ${ResultInfoObjectFragmentDoc}
+${StoneObjectFragmentDoc}`;
 
 /**
  * __useStonesQuery__
@@ -1494,6 +1532,7 @@ export const StonesDocument = gql`
  *   variables: {
  *      page: // value for 'page'
  *      itemsPage: // value for 'itemsPage'
+ *      include: // value for 'include'
  *   },
  * });
  */
@@ -1509,28 +1548,16 @@ export type StonesQueryHookResult = ReturnType<typeof useStonesQuery>;
 export type StonesLazyQueryHookResult = ReturnType<typeof useStonesLazyQuery>;
 export type StonesQueryResult = Apollo.QueryResult<StonesQuery, StonesQueryVariables>;
 export const StoneDocument = gql`
-    query stone($id: Int!) {
+    query stone($id: Int!, $include: Boolean!) {
   stone(id: $id) {
     status
     message
     stone {
-      id
-      image
-      description
-      latitude
-      longitude
-      user {
-        id
-        userName
-        avatar
-      }
-      active
-      abuse
-      code
+      ...StoneObject
     }
   }
 }
-    `;
+    ${StoneObjectFragmentDoc}`;
 
 /**
  * __useStoneQuery__
@@ -1545,6 +1572,7 @@ export const StoneDocument = gql`
  * const { data, loading, error } = useStoneQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      include: // value for 'include'
  *   },
  * });
  */
@@ -1565,14 +1593,11 @@ export const SendMailDocument = gql`
     status
     message
     mail {
-      from
-      to
-      subject
-      html
+      ...MailObject
     }
   }
 }
-    `;
+    ${MailObjectFragmentDoc}`;
 export type SendMailMutationFn = Apollo.MutationFunction<SendMailMutation, SendMailMutationVariables>;
 
 /**
@@ -1605,14 +1630,11 @@ export const ActiveUserEmailDocument = gql`
     status
     message
     mail {
-      from
-      to
-      subject
-      html
+      ...MailObject
     }
   }
 }
-    `;
+    ${MailObjectFragmentDoc}`;
 export type ActiveUserEmailMutationFn = Apollo.MutationFunction<ActiveUserEmailMutation, ActiveUserEmailMutationVariables>;
 
 /**
@@ -1710,23 +1732,16 @@ export type SigninMutationHookResult = ReturnType<typeof useSigninMutation>;
 export type SigninMutationResult = Apollo.MutationResult<SigninMutation>;
 export type SigninMutationOptions = Apollo.BaseMutationOptions<SigninMutation, SigninMutationVariables>;
 export const SignUpDocument = gql`
-    mutation signUp($user: UserInput!) {
+    mutation signUp($user: UserInput!, $include: Boolean!) {
   signup(user: $user) {
     status
     message
     user {
-      id
-      userName
-      email
-      active
-      otp {
-        hash
-        exp
-      }
+      ...UserObject
     }
   }
 }
-    `;
+    ${UserObjectFragmentDoc}`;
 export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
 
 /**
@@ -1743,6 +1758,7 @@ export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMut
  * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
  *   variables: {
  *      user: // value for 'user'
+ *      include: // value for 'include'
  *   },
  * });
  */
@@ -1822,20 +1838,16 @@ export type BlockUserMutationHookResult = ReturnType<typeof useBlockUserMutation
 export type BlockUserMutationResult = Apollo.MutationResult<BlockUserMutation>;
 export type BlockUserMutationOptions = Apollo.BaseMutationOptions<BlockUserMutation, BlockUserMutationVariables>;
 export const UpdateUserDocument = gql`
-    mutation updateUser($user: UserInput!) {
+    mutation updateUser($user: UserInput!, $include: Boolean!) {
   updateUser(user: $user) {
     status
     message
     user {
-      id
-      userName
-      email
-      avatar
-      role
+      ...UserObject
     }
   }
 }
-    `;
+    ${UserObjectFragmentDoc}`;
 export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
 
 /**
@@ -1852,6 +1864,7 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
  * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
  *   variables: {
  *      user: // value for 'user'
+ *      include: // value for 'include'
  *   },
  * });
  */
@@ -1940,25 +1953,20 @@ export type ResetPasswordActionMutationHookResult = ReturnType<typeof useResetPa
 export type ResetPasswordActionMutationResult = Apollo.MutationResult<ResetPasswordActionMutation>;
 export type ResetPasswordActionMutationOptions = Apollo.BaseMutationOptions<ResetPasswordActionMutation, ResetPasswordActionMutationVariables>;
 export const UsersDocument = gql`
-    query users($page: Int!, $itemsPage: Int!) {
+    query users($page: Int!, $itemsPage: Int!, $include: Boolean!) {
   users(page: $page, itemsPage: $itemsPage) {
     info {
-      page
-      total
-      itemsPage
-      pages
+      ...ResultInfoObject
     }
     status
     message
     users {
-      id
-      userName
-      email
-      active
+      ...UserObject
     }
   }
 }
-    `;
+    ${ResultInfoObjectFragmentDoc}
+${UserObjectFragmentDoc}`;
 
 /**
  * __useUsersQuery__
@@ -1974,6 +1982,7 @@ export const UsersDocument = gql`
  *   variables: {
  *      page: // value for 'page'
  *      itemsPage: // value for 'itemsPage'
+ *      include: // value for 'include'
  *   },
  * });
  */
@@ -1989,21 +1998,16 @@ export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
 export const MeDocument = gql`
-    query Me {
+    query Me($include: Boolean!) {
   me {
     status
     message
     user {
-      id
-      userName
-      email
-      registerDate
-      avatar
-      role
+      ...UserObject
     }
   }
 }
-    `;
+    ${UserObjectFragmentDoc}`;
 
 /**
  * __useMeQuery__
@@ -2017,10 +2021,11 @@ export const MeDocument = gql`
  * @example
  * const { data, loading, error } = useMeQuery({
  *   variables: {
+ *      include: // value for 'include'
  *   },
  * });
  */
-export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+export function useMeQuery(baseOptions: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
       }
@@ -2032,22 +2037,16 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const UserDocument = gql`
-    query user($id: Int!) {
+    query user($id: Int!, $include: Boolean!) {
   user(id: $id) {
     status
     message
     user {
-      id
-      userName
-      email
-      avatar
-      registerDate
-      role
-      active
+      ...UserObject
     }
   }
 }
-    `;
+    ${UserObjectFragmentDoc}`;
 
 /**
  * __useUserQuery__
@@ -2062,6 +2061,7 @@ export const UserDocument = gql`
  * const { data, loading, error } = useUserQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      include: // value for 'include'
  *   },
  * });
  */
@@ -2112,5 +2112,13 @@ export const namedOperations = {
     updateUser: 'updateUser',
     activeUserAction: 'activeUserAction',
     resetPasswordAction: 'resetPasswordAction'
+  },
+  Fragment: {
+    CommentObject: 'CommentObject',
+    MailObject: 'MailObject',
+    ResultInfoObject: 'ResultInfoObject',
+    LikeObject: 'LikeObject',
+    StoneObject: 'StoneObject',
+    UserObject: 'UserObject'
   }
 }

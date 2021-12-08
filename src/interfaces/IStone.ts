@@ -1,4 +1,6 @@
 import IUser from './IUser';
+import { IComment } from './IComment';
+import { ILike } from './ILike';
 
 export interface IStone {
 	__typename?: string;
@@ -13,4 +15,8 @@ export interface IStone {
 	active: boolean;
 	abuse: boolean;
 	code: string;
+	commentCount: number;
+	comments: [IComment];
+	likeCount: number;
+	likes: [ILike];
 }

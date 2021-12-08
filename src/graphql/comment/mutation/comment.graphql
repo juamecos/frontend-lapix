@@ -3,12 +3,7 @@ mutation addComment ($comment: CommentInput!) {
     status
     message
     comment {
-      id
-      stoneID
-      userID
-      comment
-      active
-      abuse
+      ...CommentObject
     }
   }
 }
@@ -18,7 +13,7 @@ mutation updateComment($id: Int!, $comment: CommentInput!) {
     status
     message
     comment {
-      comment
+      ...CommentObject
     }
   }
 }
@@ -27,6 +22,9 @@ mutation deleteComment($id: Int!) {
   deleteComment(id: $id) {
     status
     message
+    comment {
+      ...CommentObject
+    }
   }
 }
 
@@ -35,8 +33,7 @@ mutation blockComment($id: Int!) {
     status
     message
     comment {
-      id
-      active
+      ...CommentObject
     }
   }
 }
@@ -46,8 +43,7 @@ mutation reportComment($id: Int!) {
     status
     message
     comment {
-      id
-      active
+      ...CommentObject
     }
   }
 }

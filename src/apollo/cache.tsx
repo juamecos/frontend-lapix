@@ -25,7 +25,7 @@ export const GET_AUTH = gql`
 export const authVar = makeVar<IAuth>(initialValue);
 
 const cache = new InMemoryCache({
-	addTypename: false,
+	addTypename: true,
 });
 
 authVar({

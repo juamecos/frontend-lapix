@@ -1,0 +1,23 @@
+fragment StoneObject on Stone {
+  id
+  image
+  title
+  description
+  registerDate
+  latitude
+  longitude
+  active
+  abuse
+  code
+  user {
+    ...UserObject
+  }
+  commentCount
+  likeCount
+  comments {
+    ...CommentObject
+  }
+  likes {
+    ...LikeObject
+  }
+}

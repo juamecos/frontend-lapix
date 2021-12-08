@@ -5,19 +5,12 @@ mutation signin($email: String!, $password: String!) {
     token
   }
 }
-mutation signUp($user: UserInput!) {
+mutation signUp($user: UserInput!, $include: Boolean!) {
   signup(user: $user) {
     status
     message
     user {
-      id
-      userName
-      email
-      active
-      otp {
-        hash 
-        exp 
-      }
+      ...UserObject
     }
   }
 }
@@ -36,16 +29,12 @@ mutation blockUser ($id: Int!) {
   }
 }
 
-mutation updateUser($user: UserInput!) {
+mutation updateUser($user: UserInput!, $include: Boolean!) {
   updateUser(user: $user) {
     status
     message
     user {
-      id
-      userName
-      email
-      avatar
-      role
+     ...UserObject
     }
   }
 }

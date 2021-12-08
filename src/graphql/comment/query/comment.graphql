@@ -1,21 +1,12 @@
 query comments($stoneID: Int!, $page: Int!, $itemsPage: Int!) {
   comments(stoneID: $stoneID, page: $page, itemsPage: $itemsPage) {
     info {
-      page
-      total
-      itemsPage
-      pages
+      ...ResultInfoObject
     }
     status
     message
     comments {
-      id
-      stoneID
-      userID
-      comment
-      registerDate
-      abuse
-      active
+      ...CommentObject
     }
   }
 }
@@ -25,13 +16,7 @@ query comment($id: Int!) {
 		status
     message
     comment {
-      id
-      userID
-      stoneID
-      comment
-      registerDate
-      abuse
-      active
+      ...CommentObject
     }
   }
 }

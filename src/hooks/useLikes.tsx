@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { ApolloError } from '@apollo/client';
+import { useState, useEffect } from 'react';
 import {
 	useCountLikesQuery,
 	useIsLikeQuery,
@@ -6,13 +7,19 @@ import {
 } from 'src/generated/graphql';
 import { IStone } from 'src/interfaces/IStone';
 
-export type ResultUseLikes =
-	| [number | null | undefined, boolean | null | undefined, () => Promise<void>]
-	| null;
+export type ResultUseLikes = {
+	countLikes: number;
+	isLike: boolean;
+	errorLikes: ApolloError | null;
+	loadingAction: boolean;
+	onActionLike: () => Promise<void>;
+};
 
 export const useLikes = (data: IStone): ResultUseLikes => {
 	const [loadingAction, setLoadingAction] = useState(false);
-
+	const [isLike, setIsLike] = useState(false);
+	const [countLikes, setCountLikes] = useState(0);
+	const [errorLikes, setErrorLikes] = useState<ApolloError | null>(null);
 	const stoneID = data.id;
 
 	const {
@@ -24,11 +31,13 @@ export const useLikes = (data: IStone): ResultUseLikes => {
 		variables: {
 			stoneID,
 		},
+		fetchPolicy: 'cache-first',
 	});
 
 	const {
 		data: dataIsLike,
 		loading: loadingIsLike,
+		error: errorIsLike,
 		refetch: refetchIsLikeQuery,
 	} = useIsLikeQuery({
 		variables: {
@@ -37,6 +46,33 @@ export const useLikes = (data: IStone): ResultUseLikes => {
 	});
 
 	const [addLike] = useAddLikeMutation();
+
+	useEffect(() => {
+		setCountLikes(dataCountLikes?.countLikes?.count!);
+	}, [dataCountLikes]);
+
+	useEffect(() => {
+		setIsLike(dataIsLike?.isLike?.isLike!);
+	}, [dataIsLike]);
+
+	useEffect(() => {
+		setLoadingAction(loadingCountLikes);
+	}, [loadingCountLikes]);
+
+	useEffect(() => {
+		setLoadingAction(loadingIsLike);
+	}, [loadingIsLike]);
+
+	useEffect(() => {
+		if (errorCountLikes) {
+			setErrorLikes(errorCountLikes);
+		}
+	}, [errorCountLikes]);
+	useEffect(() => {
+		if (errorIsLike) {
+			setErrorLikes(errorIsLike);
+		}
+	}, [errorIsLike]);
 
 	const refetchAllQueries = () => {
 		refetchIsLikeQuery({
@@ -70,12 +106,5 @@ export const useLikes = (data: IStone): ResultUseLikes => {
 		}
 	};
 
-	if (loadingIsLike || loadingCountLikes) {
-		return null;
-	}
-
-	const isLike = dataIsLike?.isLike?.isLike;
-	const countLikes = dataCountLikes?.countLikes?.count;
-
-	return [countLikes, isLike, onActionLike];
+	return { countLikes, isLike, errorLikes, loadingAction, onActionLike };
 };

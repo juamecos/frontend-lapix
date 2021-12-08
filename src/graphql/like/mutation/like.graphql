@@ -3,10 +3,7 @@ mutation addLike ($id: Int!) {
     status
     message
     like {
-      id
-      stoneID
-      userID
-      registerDate
+      ...LikeObject
     }
   }
 }
@@ -16,10 +13,7 @@ mutation deleteLike($id: Int!) {
     status
     message
     like {
-      id
-      stoneID
-      userID
-      registerDate
+      ...LikeObject
     }
   }
 }

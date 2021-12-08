@@ -26,6 +26,9 @@ const Navigator = () => {
 	const { setUser, removeUser } = useUser();
 	const { data, loading, error, refetch } = useMeQuery({
 		fetchPolicy: 'network-only',
+		variables: {
+			include: false,
+		},
 		context: {
 			headers: {
 				authorization: token ? token : null,

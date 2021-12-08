@@ -1,0 +1,14 @@
+fragment UserObject on User {
+  id
+  userName
+  email
+  password @include(if: $include)
+  registerDate @include(if: $include)
+  avatar
+  role @include(if: $include)
+  active
+  otp @include(if: $include) {
+    hash
+    exp
+  }
+}

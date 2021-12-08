@@ -1,5 +1,6 @@
 import IOtp from './IOtp';
 export default interface IUser {
+	__typename: string;
 	id?: string;
 	userName?: string;
 	email: string;

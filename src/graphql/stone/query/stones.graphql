@@ -1,50 +1,22 @@
-query stones($page: Int!, $itemsPage: Int!) {
+query stones($page: Int!, $itemsPage: Int!, $include: Boolean!) {
   stones(page: $page, itemsPage: $itemsPage) {
     info {
-      page
-      total
-      itemsPage
-      pages
+      ...ResultInfoObject
     }
     status
     message
     stones {
-      id
-      image
-      description
-      latitude
-      longitude
-      registerDate
-      user {
-        id
-        userName
-        avatar
-      }
-      active
-      abuse
-      code
+      ...StoneObject
     }
   }
 }
 
-query stone($id: Int!) {
+query stone($id: Int!, $include: Boolean!) {
   stone(id: $id) {
 		status
     message
     stone {
-      id
-      image
-      description
-      latitude
-      longitude
-      user {
-        id
-        userName
-        avatar
-      }
-      active
-      abuse
-      code
+      ...StoneObject
     }
   }
 }

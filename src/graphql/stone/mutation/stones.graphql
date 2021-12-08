@@ -1,44 +1,19 @@
-mutation addStone($stone: StoneInput!) {
+mutation addStone($stone: StoneInput!, $include: Boolean!) {
    addStone(stone: $stone) {
     status
     message
     stone {
-      id
-      image
-      description
-      latitude
-      longitude
-      registerDate
-      user {
-        id
-        userName
-        avatar
-      }
-      active
-      abuse
-      code
+      ...StoneObject
     }
   }
 }
 
-mutation updateStone($id: Int!, $stone: StoneInput!) {
+mutation updateStone($id: Int!, $stone: StoneInput!, $include: Boolean!) {
   updateStone(id: $id, stone: $stone) {
     status
     message
     stone {
-      id
-      image
-      description
-      latitude
-      longitude
-      user {
-        id
-        userName
-        avatar
-      }
-      active
-      abuse
-      code
+      ...StoneObject
     }
   }
 }

@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import {
-	useAddLikeMutation,
-	useCountLikesQuery,
-	useIsLikeQuery,
-} from 'src/generated/graphql';
+
 import { color } from 'src/theme';
 import IconText from '../IconText';
 import styles from './LikeIconStyle';
@@ -16,7 +12,7 @@ export type Props = {
 };
 
 const LikeIcon: React.FC<Props> = ({ data }) => {
-	const [countLikes, isLike, onActionLike] = useLikes(data);
+	const { countLikes, isLike, onActionLike } = useLikes(data);
 
 	return (
 		<View testID='LikeIcon' style={styles.likes}>

@@ -9,6 +9,7 @@ import { AuthProvider } from 'src/context/authContext/authContext';
 import { UserProvider } from 'src/context/userContext.tsx/userContext';
 import { StoneProvider } from 'src/context/stoneContext/stoneContext';
 import { PermissionsProvider } from 'src/context/permissionsContext/premissionsProvider';
+import { CommentProvider } from 'src/context/commentProvider.tsx/commentContext';
 
 const App = () => {
 	return (

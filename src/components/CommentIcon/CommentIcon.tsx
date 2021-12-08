@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import { useCountCommentsQuery } from 'src/generated/graphql';
-import { useComments } from 'src/hooks/useComments';
-import { IStone } from 'src/interfaces/IStone';
+import { IComment } from 'src/interfaces/IComment';
 import IconText from '../IconText';
 import styles from './CommentIconStyle';
 
 export type Props = {
-	data: IStone;
+	data: IComment[] | [];
+	onHandleCommentPress: () => void;
 };
 
-const CommentIcon: React.FC<Props> = ({ data }) => {
-	const { countComments } = useComments(data);
-
+const CommentIcon: React.FC<Props> = ({ data, onHandleCommentPress }) => {
 	return (
 		<View testID='CommentIcon' style={styles.comments}>
 			<IconText
 				h5
-				badge={countComments ? true : false}
-				badgeData={countComments ? countComments : null}
+				badge={data.length > 0 ? true : false}
+				badgeData={data.length ? data.length : null}
 				iconName='chatbubble-outline'
 				title='comments'
 				textStyle={styles.textIconStyle}
+				onPress={onHandleCommentPress}
 			/>
 		</View>
 	);

@@ -1,0 +1,6 @@
+fragment MailObject on Mail {
+  from
+  to
+  subject
+  html
+}
